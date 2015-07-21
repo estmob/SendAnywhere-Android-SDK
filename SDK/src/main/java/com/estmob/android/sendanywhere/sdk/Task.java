@@ -119,8 +119,11 @@ public class Task {
                 TransferTask.FileState[] fileStatus = (TransferTask.FileState[])obj;
                 FileInfo[] fileInfo = new FileInfo[fileStatus.length];
                 for(int i=0; i<fileStatus.length; ++i) {
-                    fileInfo[i] = new FileInfo(fileStatus[i].getFile(), fileStatus[i].getPathName(),
-                            fileStatus[i].getTransferSize(), fileStatus[i].getTotalSize());
+                    fileInfo[i] = new FileInfo(
+                            new File(fileStatus[i].getFile().getPath()),
+                            fileStatus[i].getPathName(),
+                            fileStatus[i].getTransferSize(),
+                            fileStatus[i].getTotalSize());
                 }
                 obj = fileInfo;
             } else if (pDetailedState == TransferTask.DetailedState.PREPARING_UPDATED_DEVICE_ID) {
@@ -138,8 +141,10 @@ public class Task {
             detailedState = DetailedState.TRANSFERRING;
 
             TransferTask.FileState fileStatus = (TransferTask.FileState)obj;
-            obj = new FileInfo(fileStatus.getFile(), fileStatus.getPathName(),
-                    fileStatus.getTransferSize(), fileStatus.getTotalSize());
+            obj = new FileInfo(new File(fileStatus.getFile().getPath()),
+                    fileStatus.getPathName(),
+                    fileStatus.getTransferSize(),
+                    fileStatus.getTotalSize());
         }
 
         if(taskListener != null && state != State.UNKNOWN && detailedState != DetailedState.UNKNOWN) {

@@ -1,6 +1,7 @@
 package com.estmob.android.sendanywhere.sdk;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.estmob.paprika.transfer.DownloadTask;
 import com.estmob.paprika.transfer.TransferTask;
@@ -24,7 +25,7 @@ public class ReceiveTask extends Task {
     public ReceiveTask(Context context, String key, File destDir) {
         super(context);
 
-        task = new DownloadTask(context, key, destDir);
+        task = new DownloadTask(context, key, Uri.fromFile(destDir));
     }
 
     protected void onNotify(int pState, int pDetailedState, Object obj) {
