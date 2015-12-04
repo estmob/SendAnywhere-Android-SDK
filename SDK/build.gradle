@@ -21,4 +21,6 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':sendanywhere')
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.squareup.okhttp:okhttp:2.6.0'
 }
