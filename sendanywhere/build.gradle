@@ -1,2 +1,2 @@
 configurations.create("default")
-artifacts.add("default", file('sendanywhere-5.8.17.aar'))
+artifacts.add("default", file('sendanywhere-6.2.15.aar'))
