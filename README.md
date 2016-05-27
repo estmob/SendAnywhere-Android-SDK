@@ -1,6 +1,13 @@
-Send Anywhere Android SDK
+Send Anywhere Android SDK [ ![Download](https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg) ](https://bintray.com/estmob/maven/sendanywhere/_latestVersion)
 ===
 
+#Setup
+```gradle
+compile 'com.estmob.android:sendanywhere-transfer:6.5.4@aar'
+compile 'com.estmob.android:sendanywhere:1.0.0@aar'
+```
+
+#Usage
 Task Constructor
 ---
 
