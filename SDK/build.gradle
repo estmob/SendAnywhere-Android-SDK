@@ -32,7 +32,7 @@ apply from: 'gradle-jcenter-push.gradle'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.estmob.android:sendanywhere-transfer:6.5.4@aar'
+    compile 'com.estmob.android:sendanywhere-core:6.5.30@aar'
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp:okhttp:2.7.4'
 }

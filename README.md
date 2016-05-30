@@ -1,13 +1,17 @@
-Send Anywhere Android SDK [ ![Download](https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg) ](https://bintray.com/estmob/maven/sendanywhere/_latestVersion)
+Send Anywhere Android SDK  [![Download](https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg) ](https://bintray.com/estmob/maven/sendanywhere/_latestVersion)
 ===
 
 #Setup
+Add the following line to your gradle dependency:
 ```gradle
-compile 'com.estmob.android:sendanywhere-transfer:6.5.4@aar'
-compile 'com.estmob.android:sendanywhere:1.0.0@aar'
+compile ('com.estmob.android:sendanywhere:6.5.30@aar') {
+	transitive = true
+}
 ```
 
 #Usage
+First look at the source code of [the provided demo](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/MainActivity.java).
+
 Task Constructor
 ---
 
