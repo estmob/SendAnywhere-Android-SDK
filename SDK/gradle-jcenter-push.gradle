@@ -1,11 +1,99 @@
-publish {
-    dryRun = false
-    bintrayUser = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
-    bintrayKey = project.hasProperty('bintray.apikey') ? project.property('bintray.apikey') : System.getenv('BINTRAY_API_KEY')
-    userOrg = project.property("POM_DEVELOPER_ID")
-    groupId = project.property("GROUP")
-    artifactId = project.property("POM_ARTIFACT_ID")
-    publishVersion = project.property("VERSION_NAME")
-    desc = project.property("POM_DESCRIPTION")
-    website = project.property("POM_URL")
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = GROUP                               // Maven Group ID for the artifact
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                groupId GROUP
+                artifactId POM_ARTIFACT_ID
+                version VERSION_NAME
+
+                name POM_NAME
+                packaging POM_PACKAGING
+                description POM_DESCRIPTION
+                url POM_URL
+
+                scm {
+                    url POM_SCM_URL
+                    connection POM_SCM_CONNECTION
+                    developerConnection POM_SCM_DEV_CONNECTION
+                }
+
+                licenses {
+                    license {
+                        name POM_LICENCE_NAME
+                        url POM_LICENCE_URL
+                        distribution POM_LICENCE_DIST
+                    }
+                }
+
+                developers {
+                    developer {
+                        id POM_DEVELOPER_ID
+                        name POM_DEVELOPER_NAME
+                    }
+                }
+            }
+        }
+    }
+}
+
+version = VERSION_NAME
+archivesBaseName = POM_ARTIFACT_ID
+
+if (project.hasProperty("android")) { // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    afterEvaluate {
+        javadoc.classpath += files(android.libraryVariants.collect { variant ->
+            variant.javaCompile.classpath.files
+        })
+    }
+} else { // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = project.hasProperty('bintray.user') ? project.property('bintray.user') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintray.apikey') ? project.property('bintray.apikey') : System.getenv('BINTRAY_API_KEY')
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        userOrg = project.property("POM_DEVELOPER_ID")
+        name = project.property("POM_ARTIFACT_ID")
+        desc = project.property("POM_DESCRIPTION")
+        websiteUrl = project.property("POM_URL")
+        vcsUrl = project.property("POM_SCM_CONNECTION")
+        licenses = ['Apache-2.0']
+        publish = true
+        version {
+            name = project.property("VERSION_NAME")
+            desc = project.property("POM_DESCRIPTION")
+        }
+    }
 }
