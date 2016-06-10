@@ -35,7 +35,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.estmob.android:sendanywhere-core:6.5.30@aar'
+    compile ('com.estmob.android:sendanywhere-core:6.6.10@aar') {
+        transitive = true
+    }
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp:okhttp:2.7.4'
 }
