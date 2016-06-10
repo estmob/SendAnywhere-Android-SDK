@@ -155,11 +155,6 @@ public class Task {
     public void start() {
         task.setOptionValues(new TransferTask.Option() {
             @Override
-            public boolean isUsingParallelTransfer() {
-                return false;
-            }
-
-            @Override
             public String getApiServer() {
                 return null;
             }
