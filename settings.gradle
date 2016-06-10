@@ -1,1 +1,1 @@
-include ':app', ':SDK', ':sendanywhere'
+include ':app', ':SDK'
