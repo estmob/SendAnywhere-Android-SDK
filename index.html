@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Send Anywhere Android SDK by estmob</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Send Anywhere Android SDK</h1>
+      <h2 class="project-tagline">The simplest way to Send files Anywhere</h2>
+      <a href="https://github.com/estmob/SendAnywhere-Android-SDK" class="btn">View on GitHub</a>
+      <a href="https://github.com/estmob/SendAnywhere-Android-SDK/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/estmob/SendAnywhere-Android-SDK/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="send-anywhere-android-sdk---" class="anchor" href="#send-anywhere-android-sdk---" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Send Anywhere Android SDK  <a href="https://bintray.com/estmob/maven/sendanywhere/_latestVersion"><img src="https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg" alt="Download"> </a>
+</h1>
+
+<h1>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h1>
+
+<p>Send Anywhere Android SDK is available via both <code>jcenter()</code> and <code>mavenCentral()</code>.
+Just add the following line to your gradle dependency:</p>
+
+<div class="highlight highlight-source-groovy-gradle"><pre>compile (<span class="pl-s"><span class="pl-pds">'</span>com.estmob.android:sendanywhere:6.6.10@aar<span class="pl-pds">'</span></span>) {
+    transitive <span class="pl-k">=</span> <span class="pl-c1">true</span>
+}</pre></div>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>First look at the source code of <a href="https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/MainActivity.java">the provided demo</a>.</p>
+
+<h2>
+<a id="task-constructor" class="anchor" href="#task-constructor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Task Constructor</h2>
+
+<pre><code>public class SendTask extends Task {
+    public SendTask(Context context, File[] files);
+
+    ...
+}
+
+public class ReceiveTask extends Task {
+    public ReceiveTask(Context context, String key, File destDir);
+
+    ...
+}
+</code></pre>
+
+<h3>
+<a id="sendtaskcontext-context-file-files" class="anchor" href="#sendtaskcontext-context-file-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SendTask(Context context, File[] files)</h3>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context</td>
+<td>The current context.</td>
+</tr>
+<tr>
+<td>files</td>
+<td>The file list what you want to send.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="receivetaskcontext-context-string-key-file-destdir" class="anchor" href="#receivetaskcontext-context-string-key-file-destdir" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ReceiveTask(Context context, String key, File destDir)</h3>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context</td>
+<td>The current context.</td>
+</tr>
+<tr>
+<td>key</td>
+<td>The KEY of sender.</td>
+</tr>
+<tr>
+<td>destDir</td>
+<td>Save folder.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="public-method" class="anchor" href="#public-method" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Public method</h2>
+
+<pre><code>public class Task {
+    ...
+
+    public static void init(String key);
+
+    public void start();
+
+    public void await();
+
+    public void cancel();
+
+    ...
+}
+</code></pre>
+
+<h3>
+<a id="static-void-initstring-key" class="anchor" href="#static-void-initstring-key" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>static void init(String key)</h3>
+
+<p>Set your API key.</p>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>key</td>
+<td>Your API Key.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="void-start" class="anchor" href="#void-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void start()</h3>
+
+<p>Start task for sending or receiving.</p>
+
+<h3>
+<a id="void-await" class="anchor" href="#void-await" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void await()</h3>
+
+<p>Wait until task is finished.</p>
+
+<h3>
+<a id="void-cancel" class="anchor" href="#void-cancel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void cancel()</h3>
+
+<p>Cancel the task to stop.</p>
+
+<h2>
+<a id="listener-for-task" class="anchor" href="#listener-for-task" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Listener for task</h2>
+
+<pre><code>public class Task {
+    ...
+
+    public interface OnTaskListener {
+        void onNotify(int state, int detailedState, Object obj);
+    }
+
+    public void setOnTaskListener(OnTaskListener callback)
+
+    ...
+}
+</code></pre>
+
+<pre><code>public class Task {
+    ...
+
+    public class State {
+        public static final int UNKNOWN;
+        public static final int FINISHED;
+        public static final int ERROR;
+        public static final int PREPARING;
+        public static final int TRANSFERRING;
+    }
+
+    public class DetailedState {
+        public static final int UNKNOWN;
+
+        public static final int FINISHED_SUCCESS;
+        public static final int FINISHED_CANCEL;
+        public static final int FINISHED_ERROR;
+
+        public static final int ERROR_WRONG_API_KEY;
+        public static final int ERROR_SERVER;
+
+        public static final int PREPARING_UPDATED_KEY;
+        public static final int PREPARING_UPDATED_FILE_LIST;
+
+        public static final int TRANSFERRING;
+    }
+
+    ...
+}
+</code></pre>
+
+<pre><code>public class SendTask extends Task {
+    ...
+
+    public class DetailedState extends Task.DetailedState {
+        public static final int ERROR_NO_REQUEST;
+        public static final int ERROR_NO_EXIST_FILE;
+    }
+
+    ...
+}
+</code></pre>
+
+<pre><code>public class ReceiveTask extends Task {
+    ...
+
+    public class DetailedState extends Task.DetailedState {
+        public static final int ERROR_NO_EXIST_KEY;
+        public static final int ERROR_FILE_NO_DOWNLOAD_PATH;
+        public static final int ERROR_FILE_NO_DISK_SPACE;
+        public static final int ERROR_FILE_DISK_NOT_MOUNTED;
+    }
+
+    ...
+}
+</code></pre>
+
+<h3>
+<a id="public-void-setontasklistenerontasklistener-callback" class="anchor" href="#public-void-setontasklistenerontasklistener-callback" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public void setOnTaskListener(OnTaskListener callback)</h3>
+
+<p>Register a callback to be invoked when transfer event occurs.</p>
+
+<h3>
+<a id="void-onnotifyint-state-int-detailedstate-object-obj" class="anchor" href="#void-onnotifyint-state-int-detailedstate-object-obj" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void onNotify(int state, int detailedState, Object obj)</h3>
+
+<table>
+<thead>
+<tr>
+<th>Task.State</th>
+<th>Task.DetailedState</th>
+<th>param</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FINISHED</td>
+<td>FINISHED_SUCCESS</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>FINISHED_CANCEL</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>FINISHED_ERROR</td>
+<td></td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td>ERROR_WRONG_API_KEY</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_SERVER</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_NO_REQUEST</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_NO_EXIST_FILE</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_NO_EXIST_KEY</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_FILE_NO_DOWNLOAD_PATH</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_FILE_NO_DISK_SPACE</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>ERROR_FILE_DISK_NOT_MOUNTED</td>
+<td></td>
+</tr>
+<tr>
+<td>PREPARING</td>
+<td>PREPARING_UPDATED_KEY</td>
+<td>String</td>
+</tr>
+<tr>
+<td></td>
+<td>PREPARING_UPDATED_FILE_LIST</td>
+<td>Task.FileInfo[]</td>
+</tr>
+<tr>
+<td>TRANSFERRING</td>
+<td>TRANSFERRING</td>
+<td>Task.FileInfo</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>Flow Step
+
+<ul>
+<li>PREPARING_UPDATED_KEY
+
+<ul>
+<li>PREPARING_UPDATED_FILE_LIST
+
+<ul>
+<li>TRANSFERRING</li>
+<li>TRANSFERRING</li>
+<li>...</li>
+<li>TRANSFERRING</li>
+<li>TRANSFERRING
+
+<ul>
+<li>FINISHED_SUCCESS</li>
+<li>FINISHED_CANCEL</li>
+<li>ERROR
+
+<ul>
+<li>FINISHED_ERROR</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="file-information" class="anchor" href="#file-information" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File Information</h2>
+
+<pre><code>public class Task {
+    ...
+
+    public class FileInfo {
+        public File getFile();
+        public String getPathName();
+        public long getTransferSize();
+        public long getTotalSize();
+    }
+
+    ...
+}
+</code></pre>
+
+<h3>
+<a id="file-getfile" class="anchor" href="#file-getfile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File getFile()</h3>
+
+<p>Return the File object.</p>
+
+<h3>
+<a id="string-getpathname" class="anchor" href="#string-getpathname" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>String getPathName()</h3>
+
+<p>Return the relative path and file name.</p>
+
+<h3>
+<a id="long-gettransfersize" class="anchor" href="#long-gettransfersize" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>long getTransferSize()</h3>
+
+<p>Returns the transfer size in bytes.</p>
+
+<h3>
+<a id="long-gettotalsize" class="anchor" href="#long-gettotalsize" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>long getTotalSize();</h3>
+
+<p>Return the size of the file in bytes.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/estmob/SendAnywhere-Android-SDK">Send Anywhere Android SDK</a> is maintained by <a href="https://github.com/estmob">estmob</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
