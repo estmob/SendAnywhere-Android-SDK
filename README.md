@@ -1,5 +1,8 @@
 Send Anywhere Android SDK  [![Download](https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg) ](https://bintray.com/estmob/maven/sendanywhere/_latestVersion)
 ===
+#Prerequisites
+Please issue your API key from following link first:
+https://send-anywhere.com/web/page/api
 
 #Setup
 Send Anywhere Android SDK is available via both `jcenter()` and `mavenCentral()`.
@@ -9,6 +12,18 @@ compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
 	transitive = true
 }
 ```
+
+#Troubleshooting
+### Conflict with `google-play-services`
+Send Anywhere SDK uses `play-services-analytics:8.4.0` internally.
+If this conflicts with your `play-services` dependecy, please exclude `play-services` module used in our SDK:
+```gradle
+compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
+    exclude module: "play-services-analytics"
+    transitive = true
+}
+```
+
 
 #Usage
 First look at the source code of [the provided demo](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/MainActivity.java).
