@@ -14,6 +14,11 @@ compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
 ```
 
 #Troubleshooting
+### API key error: `ERROR_WRONG_API_KEY`
+You must call `Task.init("YOUR_API_KEY")` proceeding any transfer operations, e.g. `onCreate` of `Activity`. It is declared as `static`, so you just have to call it once.
+
+If this problem persists, please contact us to re-issue your api-key.
+
 ### Conflict with `google-play-services`
 Send Anywhere SDK uses `play-services-analytics:8.4.0` internally.
 If this conflicts with your `play-services` dependecy, please exclude `play-services` module used in our SDK:
