@@ -14,6 +14,14 @@ compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
 ```
 
 #Troubleshooting
+If you have any problem or questions with Send Anywhere Android SDK, please create new issue(https://github.com/estmob/SendAnywhere-Android-SDK/issues) or use our customer center(https://send-anywhere.zendesk.com).
+
+### Runtime permission error: `java.io.IOException: open failed: EACCES (Permission denied)`
+From Android Marshmallow(API 23), Android introduced new way to handle application permissions, called "Runtime Permissions". This requires developers to request sensitive permissions to users explicitly in application runtime. Send Anywhere SDK requires external storage permissions(`android.permission.WRITE_EXTERNAL_STORAGE`,`
+android.permission.READ_EXTERNAL_STORAGE`) to work properly, but **does NOT** handle these permissions automatically. Please refer these articles to see more about Runtime Permission Model:
+* Requesting Permissions at Run Time (Android Developers) -  https://developer.android.com/training/permissions/requesting.html
+* Exploring the new Android Permissions Model (Ribot labs) - https://labs.ribot.co.uk/exploring-the-new-android-permissions-model-ba1d5d6c0610#.95cppknud
+
 ### API key error: `ERROR_WRONG_API_KEY`
 You must call `Task.init("YOUR_API_KEY")` proceeding any transfer operations, e.g. `onCreate` of `Activity`. It is declared as `static`, so you just have to call it once.
 
