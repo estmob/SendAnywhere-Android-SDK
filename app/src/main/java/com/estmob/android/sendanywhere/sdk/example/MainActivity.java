@@ -1,13 +1,19 @@
 package com.estmob.android.sendanywhere.sdk.example;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.estmob.android.sendanywhere.sdk.ReceiveTask;
 import com.estmob.android.sendanywhere.sdk.SendTask;
@@ -24,29 +30,38 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button sendButton, recvButton;
+    private ListView logView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView logView = ((ListView)findViewById(R.id.log));
-        logView.setAdapter(new ArrayAdapter<String>(this,
+        logView = ((ListView)findViewById(R.id.log));
+        logView.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, new ArrayList<String>()));
         logView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
-        findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
+        sendButton = (Button) findViewById(R.id.send);
+        sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.setEnabled(false);
                 send();
             }
         });
 
-        findViewById(R.id.receive).setOnClickListener(new View.OnClickListener() {
+        recvButton = (Button) findViewById(R.id.receive);
+        recvButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                v.setEnabled(false);
                 receive();
             }
         });
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
 
         Task.init("YOUR_API_KEY");
     }
@@ -90,13 +105,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void print(final String text) {
-        ListView view = ((ListView)findViewById(R.id.log));
-        ArrayAdapter<String> adapter = (ArrayAdapter<String>)view.getAdapter();
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>)logView.getAdapter();
         adapter.add(text);
         adapter.notifyDataSetChanged();
     }
 
     private void send() {
+        if(PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "External storage permission required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        sendButton.setEnabled(false);
+
         // Make dummy file.
         File file1 = null;
         File file2 = null;
@@ -142,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    findViewById(R.id.send).setEnabled(true);
+                    sendButton.setEnabled(true);
+
                 } else if(state == SendTask.State.ERROR) {
                     switch(detailedState) {
                         case SendTask.DetailedState.ERROR_SERVER:
@@ -155,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
                             print("No exist files!");
                             break;
                     }
+
+                    sendButton.setEnabled(true);
                 }
             }
         });
@@ -167,9 +191,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onNotify(int state, int detailedState, Object obj) {
         }
-    };
+    }
 
     private void receive() {
+        if(PackageManager.PERMISSION_GRANTED != ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toast.makeText(this, "External storage permission required", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        recvButton.setEnabled(false);
+
         String key = ((TextView)findViewById(R.id.key)).getText().toString();
 
         ReceiveTask recvTask = new ReceiveTask(this, key);
@@ -206,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    findViewById(R.id.receive).setEnabled(true);
+                    recvButton.setEnabled(true);
                 } else if (state == ReceiveTask.State.ERROR) {
                     switch (detailedState) {
                         case ReceiveTask.DetailedState.ERROR_SERVER:
@@ -219,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
                             print("Invalid download path");
                             break;
                     }
+
+                    recvButton.setEnabled(true);
                 }
             }
         });
