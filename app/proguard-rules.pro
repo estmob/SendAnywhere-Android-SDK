@@ -15,3 +15,29 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# OkHttp
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+# Okio
+-keep class sun.misc.Unsafe { *; }
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+-dontwarn okio.**
+
+# apache commons & net stuff
+-dontwarn org.apache.commons.**
+-dontwarn org.apache.http.**
+-dontwarn android.net.http.**
+-keep class org.apache.http.** { *; }
+-keep class android.net.http.** { *; }
+
+# gms
+-dontwarn com.google.android.gms.**
+-keep class com.google.android.gms.** { *; }
+
+-keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
