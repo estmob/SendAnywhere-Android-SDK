@@ -16,6 +16,9 @@ compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
 #Troubleshooting
 If you have any problem or questions with Send Anywhere Android SDK, please create new issue(https://github.com/estmob/SendAnywhere-Android-SDK/issues) or use our customer center(https://send-anywhere.zendesk.com).
 
+### Proguard
+If your are using Proguard and it complains during complie, refer [Proguard rules in sample app](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/proguard-rules.pro).
+
 ### Runtime permission error: `java.io.IOException: open failed: EACCES (Permission denied)`
 From Android Marshmallow(API 23), Android introduced new way to handle application permissions, called "Runtime Permissions". This requires developers to request sensitive permissions to users explicitly in application runtime. Send Anywhere SDK requires external storage permissions(`android.permission.WRITE_EXTERNAL_STORAGE`,`
 android.permission.READ_EXTERNAL_STORAGE`) to work properly, but **does NOT** handle these permissions automatically. Please refer these articles to see more about Runtime Permission Model:
