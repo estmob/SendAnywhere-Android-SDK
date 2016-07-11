@@ -34,7 +34,12 @@ public class Task {
         public static final int TRANSFERRING = (State.TRANSFERRING << 8);
     }
 
-    public class FileInfo {
+    public static class Value {
+        public static final int KEY = 0x100;
+        public static final int EXPIRES_TIME = 0x103;
+    }
+
+    public static class FileInfo {
         private File file;
         private String pathName;
         private long transferSize;
@@ -75,6 +80,7 @@ public class Task {
         TransferTask.setApiKey(key);
     }
 
+    private static String profileName = "Send Anywhere SDK";
     private static final String PREF_NAME = "sendanywhere";
     private static AuthTokenValue token;
 
@@ -84,6 +90,10 @@ public class Task {
 
     Task(Context context) {
         this.context = context;
+    }
+
+    public static void setProfileName(String name) {
+        profileName = name;
     }
 
     public void setOnTaskListener(OnTaskListener callback) {
@@ -172,7 +182,7 @@ public class Task {
 
             @Override
             public String getProfileName() {
-                return "Send Anywhere SDK";
+                return profileName;
             }
         });
 
@@ -205,5 +215,9 @@ public class Task {
 
     public void cancel() {
         task.cancel();
+    }
+
+    public Object getValue(int key) {
+        return task.getValue(key);
     }
 }

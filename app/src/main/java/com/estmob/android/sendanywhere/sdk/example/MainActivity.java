@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Task.init("YOUR_API_KEY");
+        Task.setProfileName("Hello world");
     }
 
     @Override
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        SendTask sendTask = new SendTask(this, new File[] {file1, file2});
+        final SendTask sendTask = new SendTask(this, new File[] {file1, file2});
 
         sendTask.setOnTaskListener(new SendTask.OnTaskListener() {
             @Override
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         if(key != null) {
                             ((TextView)findViewById(R.id.key)).setText(key);
                             print(String.format("Received key: %s", key));
+                            print(String.format("Expires at: %s", new Timestamp((long)sendTask.getValue(Task.Value.EXPIRES_TIME) * 1000)));
                         }
                     }
                 } else if(state == SendTask.State.TRANSFERRING) {
