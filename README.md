@@ -8,7 +8,7 @@ https://send-anywhere.com/web/page/api
 Send Anywhere Android SDK is available via both `jcenter()` and `mavenCentral()`.
 Just add the following line to your gradle dependency:
 ```gradle
-compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
+compile ('com.estmob.android:sendanywhere:6.7.11@aar') {
 	transitive = true
 }
 ```
@@ -31,10 +31,10 @@ You must call `Task.init("YOUR_API_KEY")` proceeding any transfer operations, e.
 If this problem persists, please contact us to re-issue your api-key.
 
 ### Conflict with `google-play-services`
-Send Anywhere SDK uses `play-services-analytics:8.4.0` internally.
+Send Anywhere SDK uses `play-services-analytics:9.0.2` internally.
 If this conflicts with your `play-services` dependecy, please exclude `play-services` module used in our SDK:
 ```gradle
-compile ('com.estmob.android:sendanywhere:6.6.10@aar') {
+compile ('com.estmob.android:sendanywhere:6.7.11@aar') {
     exclude module: "play-services-analytics"
     transitive = true
 }
@@ -47,7 +47,7 @@ First look at the source code of [the provided demo](https://github.com/estmob/S
 Task Constructor
 ---
 
-```
+```java
 public class SendTask extends Task {
     public SendTask(Context context, File[] files);
 
@@ -79,17 +79,21 @@ destDir    | Save folder.         |
 Public method
 ---
 
-```
+```java
 public class Task {
     ...
 
     public static void init(String key);
+
+    public static void setProfileName(String name);
 
     public void start();
 
     public void await();
 
     public void cancel();
+
+    public Object getValue();
 
     ...
 }
@@ -102,6 +106,13 @@ Parameters |               |
 -----------| --------------|
 key        | Your API Key. |
 
+### static void setProfileName(String name)
+Set profile name of the device
+
+Parameters |                     |
+-----------| --------------------|
+name       | Desired device name |
+
 ### void start()
 Start task for sending or receiving.
 
@@ -111,10 +122,25 @@ Wait until task is finished.
 ### void cancel()
 Cancel the task to stop.
 
+### Object getValue(int key)
+Fetch additional information of `Task`
+
+```java
+public static class Value {
+    public static final int KEY;
+    public static final int EXPIRES_TIME;
+}
+```
+
+Task.Value (key)| Task.DetailedState (available on)  | Type                                  |
+----------------|------------------------------------|---------------------------------------|
+KEY             | PREPARING_UPDATED_KEY              | String                                |
+EXPIRES_TIME    | PREPARING_UPDATED_KEY              | long (UNIX Epoch time **in seconds**) |
+
 
 Listener for task
 ---
-```
+```java
 public class Task {
     ...
 
@@ -129,11 +155,11 @@ public class Task {
 ```
 
 
-```
+```java
 public class Task {
     ...
 
-    public class State {
+    public static class State {
         public static final int UNKNOWN;
         public static final int FINISHED;
         public static final int ERROR;
@@ -141,7 +167,7 @@ public class Task {
         public static final int TRANSFERRING;
     }
 
-    public class DetailedState {
+    public static class DetailedState {
         public static final int UNKNOWN;
 
         public static final int FINISHED_SUCCESS;
@@ -161,24 +187,23 @@ public class Task {
 }
 ```
 
-```
+```java
 public class SendTask extends Task {
     ...
 
-    public class DetailedState extends Task.DetailedState {
+    public static class DetailedState extends Task.DetailedState {
         public static final int ERROR_NO_REQUEST;
-        public static final int ERROR_NO_EXIST_FILE;
     }
 
     ...
 }
 ```
 
-```
+```java
 public class ReceiveTask extends Task {
     ...
 
-    public class DetailedState extends Task.DetailedState {
+    public static class DetailedState extends Task.DetailedState {
         public static final int ERROR_NO_EXIST_KEY;
         public static final int ERROR_FILE_NO_DOWNLOAD_PATH;
         public static final int ERROR_FILE_NO_DISK_SPACE;
@@ -202,7 +227,6 @@ FINISHED     | FINISHED_SUCCESS             |                 |
 ERROR        | ERROR_WRONG_API_KEY          |                 |
              | ERROR_SERVER                 |                 |
              | ERROR_NO_REQUEST             |                 |
-             | ERROR_NO_EXIST_FILE          |                 |
              | ERROR_NO_EXIST_KEY           |                 |
              | ERROR_FILE_NO_DOWNLOAD_PATH  |                 |
              | ERROR_FILE_NO_DISK_SPACE     |                 |
@@ -212,26 +236,26 @@ PREPARING    | PREPARING_UPDATED_KEY        | String          |
 TRANSFERRING | TRANSFERRING                 | Task.FileInfo   |
 
 
-* Flow Step
-  * PREPARING_UPDATED_KEY
-    * PREPARING_UPDATED_FILE_LIST
-      * TRANSFERRING
-      * TRANSFERRING
-      * ...
-      * TRANSFERRING
-      * TRANSFERRING
-        * FINISHED_SUCCESS
-        * FINISHED_CANCEL
-        * ERROR
-          * FINISHED_ERROR
+Flow Step
+ * PREPARING_UPDATED_KEY
+   * PREPARING_UPDATED_FILE_LIST
+     * TRANSFERRING
+     * TRANSFERRING
+     * ...
+     * TRANSFERRING
+     * TRANSFERRING
+       * FINISHED_SUCCESS
+       * FINISHED_CANCEL
+       * ERROR
+         * FINISHED_ERROR
 
 File Information
 ---
-```
+```java
 public class Task {
     ...
 
-    public class FileInfo {
+    public static class FileInfo {
         public File getFile();
         public String getPathName();
         public long getTransferSize();
