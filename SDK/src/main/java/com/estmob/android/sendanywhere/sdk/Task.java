@@ -9,7 +9,7 @@ import com.estmob.paprika.transfer.TransferTask;
 import java.io.File;
 
 public class Task {
-    public class State {
+    public static class State {
         public static final int UNKNOWN = 0;
         public static final int FINISHED = 1;
         public static final int ERROR = 2;
@@ -17,7 +17,7 @@ public class Task {
         public static final int TRANSFERRING = 100;
     }
 
-    public class DetailedState {
+    public static class DetailedState {
         public static final int UNKNOWN = 0;
 
         public static final int FINISHED_SUCCESS = (State.FINISHED << 8) + 1;
@@ -27,6 +27,7 @@ public class Task {
         public static final int ERROR_WRONG_API_KEY = (State.ERROR << 8) + 1;
         public static final int ERROR_SERVER =  (State.ERROR << 8) + 41;
 
+        public static final int PREPARING_UPDATED_DEVICE_ID = (State.PREPARING << 8) + 1;
         public static final int PREPARING_UPDATED_KEY = (State.PREPARING << 8) + 11;
         public static final int PREPARING_UPDATED_FILE_LIST = (State.PREPARING << 8) + 14;
 
@@ -93,27 +94,27 @@ public class Task {
         int state = State.UNKNOWN;
         int detailedState = DetailedState.UNKNOWN;
 
-        if (pState == TransferTask.State.FINISHED) {
+        if (pState == State.FINISHED) {
             state = State.FINISHED;
-            if (pDetailedState == TransferTask.DetailedState.FINISHED_SUCCESS) {
+            if (pDetailedState == DetailedState.FINISHED_SUCCESS) {
                 detailedState = DetailedState.FINISHED_SUCCESS;
-            } else if (pDetailedState == TransferTask.DetailedState.FINISHED_CANCEL) {
+            } else if (pDetailedState == DetailedState.FINISHED_CANCEL) {
                 detailedState = DetailedState.FINISHED_CANCEL;
-            } else if (pDetailedState == TransferTask.DetailedState.FINISHED_ERROR) {
+            } else if (pDetailedState == DetailedState.FINISHED_ERROR) {
                 detailedState = DetailedState.FINISHED_ERROR;
             }
-        } else if (pState == TransferTask.State.ERROR) {
+        } else if (pState == State.ERROR) {
             state = State.ERROR;
-            if (pDetailedState == TransferTask.DetailedState.ERROR_WRONG_API_KEY) {
+            if (pDetailedState == DetailedState.ERROR_WRONG_API_KEY) {
                 detailedState = DetailedState.ERROR_WRONG_API_KEY;
             } else {
                 detailedState = DetailedState.ERROR_SERVER;
             }
-        } else if (pState == TransferTask.State.PREPARING) {
+        } else if (pState == State.PREPARING) {
             state = State.PREPARING;
-            if (pDetailedState == TransferTask.DetailedState.PREPARING_UPDATED_KEY) {
+            if (pDetailedState == DetailedState.PREPARING_UPDATED_KEY) {
                 detailedState = DetailedState.PREPARING_UPDATED_KEY;
-            } else if (pDetailedState == TransferTask.DetailedState.PREPARING_UPDATED_FILE_LIST) {
+            } else if (pDetailedState == DetailedState.PREPARING_UPDATED_FILE_LIST) {
                 detailedState = DetailedState.PREPARING_UPDATED_FILE_LIST;
 
                 TransferTask.FileState[] fileStatus = (TransferTask.FileState[])obj;
@@ -126,7 +127,7 @@ public class Task {
                             fileStatus[i].getTotalSize());
                 }
                 obj = fileInfo;
-            } else if (pDetailedState == TransferTask.DetailedState.PREPARING_UPDATED_DEVICE_ID) {
+            } else if (pDetailedState == DetailedState.PREPARING_UPDATED_DEVICE_ID) {
                 String deviceId = token.getDeviceId();
                 String devicePassword = token.getDevicePassword();
 
@@ -136,7 +137,7 @@ public class Task {
                 editor.putString("device_password", devicePassword);
                 editor.commit();
             }
-        } else if (pState == TransferTask.State.TRANSFERRING) {
+        } else if (pState == State.TRANSFERRING) {
             state = State.TRANSFERRING;
             detailedState = DetailedState.TRANSFERRING;
 

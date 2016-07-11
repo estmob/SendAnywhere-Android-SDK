@@ -173,9 +173,6 @@ public class MainActivity extends AppCompatActivity {
                         case SendTask.DetailedState.ERROR_NO_REQUEST:
                             print("Timeout for waiting recipient");
                             break;
-                        case SendTask.DetailedState.ERROR_NO_EXIST_FILE:
-                            print("No exist files!");
-                            break;
                     }
 
                     sendButton.setEnabled(true);

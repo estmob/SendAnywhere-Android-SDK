@@ -2,15 +2,13 @@ package com.estmob.android.sendanywhere.sdk;
 
 import android.content.Context;
 
-import com.estmob.paprika.transfer.TransferTask;
 import com.estmob.paprika.transfer.UploadTask;
 
 import java.io.File;
 
 public class SendTask extends Task {
     public class DetailedState extends Task.DetailedState {
-        public static final int ERROR_NO_REQUEST =  (TransferTask.State.ERROR << 8) + 20;
-        public static final int ERROR_NO_EXIST_FILE =  (TransferTask.State.ERROR << 8) + 21;
+        public static final int ERROR_NO_REQUEST =  (State.ERROR << 8) + 20;
     }
 
     public SendTask(Context context, File[] files) {
@@ -23,12 +21,10 @@ public class SendTask extends Task {
         int state = State.UNKNOWN;
         int detailedState = DetailedState.UNKNOWN;
 
-        if (pState == UploadTask.State.ERROR) {
+        if (pState == State.ERROR) {
             state = State.ERROR;
-            if (pDetailedState == UploadTask.DetailedState.ERROR_NO_REQUEST) {
+            if (pDetailedState == DetailedState.ERROR_NO_REQUEST) {
                 detailedState = DetailedState.ERROR_NO_REQUEST;
-            } else if (pDetailedState == UploadTask.DetailedState.ERROR_NO_EXIST_FILE) {
-                detailedState = DetailedState.ERROR_NO_EXIST_FILE;
             }
         }
 
