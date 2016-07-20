@@ -1,10 +1,17 @@
 Send Anywhere Android SDK  [![Download](https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg) ](https://bintray.com/estmob/maven/sendanywhere/_latestVersion)
 ===
-#Prerequisites
+# NOTICE
+We have followinng important changes on `v6.7.20` and later:
+ - `SendTask.FileInfo` interface added to support sending non-traditional files.
+ - `Task.FileInfo` is renamed to `Task.FileState` for avoiding confusion with `SendTask.FileInfo`.
+
+See [Releases](https://github.com/estmob/SendAnywhere-Android-SDK/releases) for more details.
+
+# Prerequisites
 Please issue your API key from following link first:
 https://send-anywhere.com/web/page/api
 
-#Setup
+# Setup
 Send Anywhere Android SDK is available via both `jcenter()` and `mavenCentral()`.
 Just add the following line to your gradle dependency:
 ```gradle
@@ -13,7 +20,7 @@ compile ('com.estmob.android:sendanywhere:6.7.20@aar') {
 }
 ```
 
-#Troubleshooting
+# Troubleshooting
 If you have any problem or questions with Send Anywhere Android SDK, please create new issue(https://github.com/estmob/SendAnywhere-Android-SDK/issues) or use our customer center(https://send-anywhere.zendesk.com).
 
 ### Proguard
@@ -41,16 +48,24 @@ compile ('com.estmob.android:sendanywhere:6.7.11@aar') {
 ```
 
 
-#Usage
+# Usage
 First look at the source code of [the provided demo](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/MainActivity.java).
 
-Task Constructor
+Task Constructors
 ---
 
 ```java
 public class SendTask extends Task {
     public SendTask(Context context, File[] files);
 
+    public SendTask(Context context, List<? extends FileInfo> files);
+
+	public interface FileInfo {
+        @NonNull Uri getUri();
+        @NonNull String getFileName();
+        long getLength();
+        long getLastModified();
+    }
     ...
 }
 
@@ -67,16 +82,33 @@ Parameters |                                      |
 context    | The current context.                 |
 files      | The file list what you want to send. |
 
+### SendTask(Context context, List<? extends FileInfo> files)
+Parameters |                                      							   |
+-----------| ------------------------------------------------------------------|
+context    | The current context.                 							   |
+files      | The file list with your own implementation of `SendTask.FileInfo` |
+
+You can provied your own implementation of `SendTask.FileInfo` for non-traditional files that cannot be represented as `Java.io.File`, such as files starting with `content://..`
+
+See [SimpleFileInfo in sample](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/SimpleFileInfo.java) for the example implementaion.
+
+#### SendTask.FileInfo interface
+Methods         | Return type	|                                   |
+--------------- | ------------- |---------------------------------- |
+getUri          | Uri           | The Uri of sending file.          |
+getFileName     | String        | The file name for recevier.       |
+getLength       | long          | The length of sending file.       |
+getLastModified | long          | The last modified time in seconds |
+
 ### ReceiveTask(Context context, String key, File destDir)
 Parameters |                      |
------------| ---------------------|
+---------- | ---------------------|
 context    | The current context. |
 key        | The KEY of sender.   |
 destDir    | Save folder.         |
 
 
-
-Public method
+Public methods
 ---
 
 ```java
@@ -99,31 +131,31 @@ public class Task {
 }
 ```
 
-### static void init(String key)
+### public static void init(String key)
 Set your API key.
 
 Parameters |               |
 -----------| --------------|
 key        | Your API Key. |
 
-### static void setProfileName(String name)
+### public static void setProfileName(String name)
 Set profile name of the device
 
 Parameters |                     |
 -----------| --------------------|
 name       | Desired device name |
 
-### void start()
+### public void start()
 Start task for sending or receiving.
 
-### void await()
+### public void await()
 Wait until task is finished.
 
-### void cancel()
+### public void cancel()
 Cancel the task to stop.
 
-### Object getValue(int key)
-Fetch additional information of `Task`
+### public Object getValue(int key)
+Fetch additional information of `Task`. You should cast return `Object` to vaild types for each cases.
 
 ```java
 public static class Value {
@@ -138,7 +170,7 @@ KEY             | PREPARING_UPDATED_KEY              | String                   
 EXPIRES_TIME    | PREPARING_UPDATED_KEY              | long (UNIX Epoch time **in seconds**) |
 
 
-Listener for task
+Listeners for `Task`
 ---
 ```java
 public class Task {
@@ -157,8 +189,6 @@ public class Task {
 
 ```java
 public class Task {
-    ...
-
     public static class State {
         public static final int UNKNOWN;
         public static final int FINISHED;
@@ -189,8 +219,6 @@ public class Task {
 
 ```java
 public class SendTask extends Task {
-    ...
-
     public static class DetailedState extends Task.DetailedState {
         public static final int ERROR_NO_REQUEST;
     }
@@ -201,8 +229,6 @@ public class SendTask extends Task {
 
 ```java
 public class ReceiveTask extends Task {
-    ...
-
     public static class DetailedState extends Task.DetailedState {
         public static final int ERROR_NO_EXIST_KEY;
         public static final int ERROR_FILE_NO_DOWNLOAD_PATH;
@@ -249,13 +275,13 @@ Flow Step
        * ERROR
          * FINISHED_ERROR
 
-File Information
+FileState (File Transfer State Information)
 ---
 ```java
 public class Task {
     ...
 
-    public static class FileInfo {
+    public static class FileSate {
         public File getFile();
         public String getPathName();
         public long getTransferSize();
