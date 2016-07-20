@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else if(state == SendTask.State.TRANSFERRING) {
-                    SendTask.FileInfo fileState = (SendTask.FileInfo)obj;
+                    Task.FileState fileState = (Task.FileState)obj;
                     if(fileState != null) {
                         print(String.format("%s: %s/%s",
                                 fileState.getFile().getName(),
@@ -210,14 +210,14 @@ public class MainActivity extends AppCompatActivity {
 
                 if (state == ReceiveTask.State.PREPARING) {
                     if (detailedState == ReceiveTask.DetailedState.PREPARING_UPDATED_FILE_LIST) {
-                        Task.FileInfo[] fileInfoList = (Task.FileInfo[])obj;
-                        for(Task.FileInfo file : fileInfoList) {
+                        Task.FileState[] fileStateList = (Task.FileState[])obj;
+                        for(Task.FileState file : fileStateList) {
                             print(String.format("%s: %d bytes",
                                     file.getPathName(), file.getTotalSize()));
                         }
                     }
                 } else if (state == ReceiveTask.State.TRANSFERRING) {
-                    ReceiveTask.FileInfo fileState = (ReceiveTask.FileInfo) obj;
+                    Task.FileState fileState = (Task.FileState) obj;
                     if (fileState != null) {
                         print(String.format("%s => %s/%s",
                                 fileState.getFile().getName(),

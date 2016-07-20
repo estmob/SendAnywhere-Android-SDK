@@ -39,15 +39,13 @@ public class Task {
         public static final int EXPIRES_TIME = 0x103;
     }
 
-    public static class FileInfo {
+    public static class FileState {
         private File file;
         private String pathName;
         private long transferSize;
         private long totalSize;
 
-        private File downTempFile;
-
-        FileInfo(File file, String pathName, long transferSize, long totalSize) {
+        FileState(File file, String pathName, long transferSize, long totalSize) {
             this.file = file;
             this.pathName = pathName;
             this.transferSize = transferSize;
@@ -128,15 +126,15 @@ public class Task {
                 detailedState = DetailedState.PREPARING_UPDATED_FILE_LIST;
 
                 TransferTask.FileState[] fileStatus = (TransferTask.FileState[])obj;
-                FileInfo[] fileInfo = new FileInfo[fileStatus.length];
+                FileState[] fileState = new FileState[fileStatus.length];
                 for(int i=0; i<fileStatus.length; ++i) {
-                    fileInfo[i] = new FileInfo(
+                    fileState[i] = new FileState(
                             new File(fileStatus[i].getFile().getPath()),
                             fileStatus[i].getPathName(),
                             fileStatus[i].getTransferSize(),
                             fileStatus[i].getTotalSize());
                 }
-                obj = fileInfo;
+                obj = fileState;
             } else if (pDetailedState == DetailedState.PREPARING_UPDATED_DEVICE_ID) {
                 String deviceId = token.getDeviceId();
                 String devicePassword = token.getDevicePassword();
@@ -152,7 +150,7 @@ public class Task {
             detailedState = DetailedState.TRANSFERRING;
 
             TransferTask.FileState fileStatus = (TransferTask.FileState)obj;
-            obj = new FileInfo(new File(fileStatus.getFile().getPath()),
+            obj = new FileState(new File(fileStatus.getFile().getPath()),
                     fileStatus.getPathName(),
                     fileStatus.getTransferSize(),
                     fileStatus.getTotalSize());
