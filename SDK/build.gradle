@@ -39,6 +39,7 @@ dependencies {
     }
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.squareup.okhttp:okhttp:2.7.4'
+    compile 'com.android.support:support-annotations:23.4.0'
 }
 
 apply from: 'gradle-jcenter-push.gradle'
