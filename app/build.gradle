@@ -7,12 +7,16 @@ android {
         applicationId "com.estmob.android.sendanywhere.sdk.example"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+
+        versionCode 60720
+        versionName '6.7.20'
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
