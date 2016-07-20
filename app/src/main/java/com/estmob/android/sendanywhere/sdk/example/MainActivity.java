@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -130,7 +131,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        final SendTask sendTask = new SendTask(this, new File[] {file1, file2});
+//        final SendTask sendTask = new SendTask(this, new File[] {file1, file2});
+        final SendTask sendTask = new SendTask(this, Arrays.asList(new SimpleFileInfo(file1),
+                new SimpleFileInfo(file2)));
 
         sendTask.setOnTaskListener(new SendTask.OnTaskListener() {
             @Override
