@@ -23,8 +23,8 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
 
-        versionCode 60720
-        versionName '6.7.20'
+        versionCode 60721
+        versionName '6.7.21'
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
