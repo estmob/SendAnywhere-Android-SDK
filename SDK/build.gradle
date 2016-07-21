@@ -25,6 +25,8 @@ android {
 
         versionCode 60720
         versionName '6.7.20'
+
+        consumerProguardFiles 'consumer-proguard-rules.pro'
     }
 
     buildTypes {
