@@ -16,31 +16,30 @@
 #   public *;
 #}
 
+
 # OkHttp
 -keepattributes Signature
 -keepattributes *Annotation*
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
 -dontwarn com.squareup.okhttp.**
+-dontnote com.squareup.okhttp.**
 
 # Okio
--keep class sun.misc.Unsafe { *; }
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
+-dontnote okio.**
 
-# apache commons & net stuff
--dontwarn org.apache.commons.**
--dontwarn org.apache.http.**
--dontwarn android.net.http.**
--keep class org.apache.http.** { *; }
--keep class android.net.http.** { *; }
-
-# gms
--dontwarn com.google.android.gms.**
--keep class com.google.android.gms.** { *; }
+# support-v4
+-dontwarn android.support.v4.**
+-dontnote android.support.v4.**
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class android.support.v4.** { *; }
 
 # support-v7-appcompat
+-dontnote android.support.v7.**
 -keep public class android.support.v7.widget.** { *; }
 -keep public class android.support.v7.internal.widget.** { *; }
 -keep public class android.support.v7.internal.view.menu.** { *; }
