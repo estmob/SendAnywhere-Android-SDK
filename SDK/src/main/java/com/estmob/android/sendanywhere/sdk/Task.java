@@ -2,13 +2,20 @@ package com.estmob.android.sendanywhere.sdk;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.estmob.paprika.transfer.AuthTokenValue;
 import com.estmob.paprika.transfer.TransferTask;
 
-import java.io.File;
 
+/**
+ * Base class for File transfer class, such as {@link SendTask}, {@link ReceiveTask}.
+ */
 public class Task {
+    /**
+     * The class contains rough transfer state values.
+     */
     public static class State {
         public static final int UNKNOWN = 0;
         public static final int FINISHED = 1;
@@ -17,63 +24,146 @@ public class Task {
         public static final int TRANSFERRING = 100;
     }
 
+    /**
+     * The class contains detailed transfer state values.
+     */
     public static class DetailedState {
         public static final int UNKNOWN = 0;
 
+        /**
+         * Finished with success
+         */
         public static final int FINISHED_SUCCESS = (State.FINISHED << 8) + 1;
+        /**
+         * Finished by cancel
+         */
         public static final int FINISHED_CANCEL = (State.FINISHED << 8) + 2;
+        /**
+         * Finished with error
+         */
         public static final int FINISHED_ERROR = (State.FINISHED << 8) + 3;
 
+        /**
+         * Requested with wrong API key or <b>API key is not set</b>
+         *
+         * @see #init(String)
+         */
         public static final int ERROR_WRONG_API_KEY = (State.ERROR << 8) + 1;
-        public static final int ERROR_SERVER =  (State.ERROR << 8) + 41;
+        public static final int ERROR_SERVER = (State.ERROR << 8) + 41;
 
+        /**
+         * Device is registered to our server, and ready to transfer.
+         */
         public static final int PREPARING_UPDATED_DEVICE_ID = (State.PREPARING << 8) + 1;
+        /**
+         * 6-digit transfer key is created. You can fetch key and its expiry.
+         */
         public static final int PREPARING_UPDATED_KEY = (State.PREPARING << 8) + 11;
+        /**
+         * Transfer file list is updated either to server(send) or from server(receive)
+         */
         public static final int PREPARING_UPDATED_FILE_LIST = (State.PREPARING << 8) + 14;
 
+        /**
+         * In transfer status
+         */
         public static final int TRANSFERRING = (State.TRANSFERRING << 8);
     }
 
+    /**
+     * The class contains value keys used to fetch additional information of {@link Task}.
+     *
+     * @see #getValue(int)
+     */
     public static class Value {
+        /**
+         * Key of 6-digit transfer key
+         */
         public static final int KEY = 0x100;
+        /**
+         * Key of expiration time of corresponding transfer key
+         */
         public static final int EXPIRES_TIME = 0x103;
     }
 
+    /**
+     * The class to store transfer status of individual files.
+     */
     public static class FileState {
-        private File file;
+        private Uri file;
         private String pathName;
         private long transferSize;
         private long totalSize;
 
-        FileState(File file, String pathName, long transferSize, long totalSize) {
+        FileState(Uri file, String pathName, long transferSize, long totalSize) {
             this.file = file;
             this.pathName = pathName;
             this.transferSize = transferSize;
             this.totalSize = totalSize;
         }
 
-        public File getFile() {
+        /**
+         * @return {@link Uri} of the file.
+         */
+        public Uri getFile() {
             return file;
         }
 
+        /**
+         * @return pathName of the file.
+         */
         public String getPathName() {
             return pathName;
         }
 
+        /**
+         * @return transferred size of the file
+         */
         public long getTransferSize() {
             return transferSize;
         }
 
+        /**
+         * @return total size of the file
+         */
         public long getTotalSize() {
             return totalSize;
         }
     }
 
 
+    /**
+     * The callback interface used to indicate the transfer state has been changed.
+     * <p>
+     * This should be provided to {@link Task#setOnTaskListener(OnTaskListener)}.
+     */
     public interface OnTaskListener {
+        /**
+         * Called when the transfer status has been changed.
+         *
+         * @param state         The rough transfer state {@link State}.
+         * @param detailedState The detailed transfer state {@link DetailedState}.
+         * @param obj           Additional information according to the transfer status.<br>
+         *                      You must cast to valid types for each cases.<br>
+         *                      {@link String} when {@link DetailedState#PREPARING_UPDATED_KEY}<br>
+         *                      {@link Task.FileState[]} when {@link DetailedState#PREPARING_UPDATED_FILE_LIST}<br>
+         *                      {@link Task.FileState} when {@link DetailedState#TRANSFERRING}
+         */
         void onNotify(int state, int detailedState, Object obj);
     }
 
+    /**
+     * Sets Send-Anywhere API key.
+     * <p>
+     * You must call this proceeding to any transfer operations,
+     * e.g. {@link android.app.Activity#onCreate}.
+     * It is declared as static, so you just have to call it once.
+     * <p>
+     * Issue your API key at <a href="https://send-anywhere.com/web/page/api" target="_blank">
+     * https://send-anywhere.com/web/page/api</a>.
+     *
+     * @param key Your API Key
+     */
     public static void init(String key) {
         TransferTask.setApiKey(key);
     }
@@ -90,10 +180,20 @@ public class Task {
         this.context = context;
     }
 
+    /**
+     * Sets profile name shown on the recent device list.
+     *
+     * @param name Profile name
+     */
     public static void setProfileName(String name) {
         profileName = name;
     }
 
+    /**
+     * Set the callback that indicates the transfer state has been changed.
+     *
+     * @param onTaskListener The callback.
+     */
     public void setOnTaskListener(@Nullable OnTaskListener onTaskListener) {
         mTaskListener = onTaskListener;
     }
@@ -125,11 +225,11 @@ public class Task {
             } else if (pDetailedState == DetailedState.PREPARING_UPDATED_FILE_LIST) {
                 detailedState = DetailedState.PREPARING_UPDATED_FILE_LIST;
 
-                TransferTask.FileState[] fileStatus = (TransferTask.FileState[])obj;
+                TransferTask.FileState[] fileStatus = (TransferTask.FileState[]) obj;
                 FileState[] fileState = new FileState[fileStatus.length];
-                for(int i=0; i<fileStatus.length; ++i) {
+                for (int i = 0; i < fileStatus.length; ++i) {
                     fileState[i] = new FileState(
-                            new File(fileStatus[i].getFile().getPath()),
+                            fileStatus[i].getFile(),
                             fileStatus[i].getPathName(),
                             fileStatus[i].getTransferSize(),
                             fileStatus[i].getTotalSize());
@@ -149,8 +249,8 @@ public class Task {
             state = State.TRANSFERRING;
             detailedState = DetailedState.TRANSFERRING;
 
-            TransferTask.FileState fileStatus = (TransferTask.FileState)obj;
-            obj = new FileState(new File(fileStatus.getFile().getPath()),
+            TransferTask.FileState fileStatus = (TransferTask.FileState) obj;
+            obj = new FileState(fileStatus.getFile(),
                     fileStatus.getPathName(),
                     fileStatus.getTransferSize(),
                     fileStatus.getTotalSize());
@@ -161,6 +261,13 @@ public class Task {
         }
     }
 
+    /**
+     * Starts transfer task for send/receive.
+     * <p>
+     * Task is executed on the background thread.
+     *
+     * @see #await()
+     */
     public void start() {
         task.setOptionValues(new TransferTask.Option() {
             @Override
@@ -184,12 +291,12 @@ public class Task {
             }
         });
 
-        if(token == null) {
+        if (token == null) {
             SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             String deviceId = pref.getString("device_id", null);
             String devicePassword = pref.getString("device_password", null);
 
-            if(deviceId != null && devicePassword != null) {
+            if (deviceId != null && devicePassword != null) {
                 token = new AuthTokenValue(deviceId, devicePassword);
             } else {
                 token = new AuthTokenValue();
@@ -207,14 +314,31 @@ public class Task {
         task.start();
     }
 
+    /**
+     * Wait until this transfer task is finished.
+     */
     public void await() {
         task.await();
     }
 
+    /**
+     * Cancel this transfer task.
+     */
     public void cancel() {
         task.cancel();
     }
 
+    /**
+     * Fetch additional information of this {@link Task}.
+     * <p>
+     * You should cast return {@link Object} to valid types for each cases.
+     *
+     * @param key The key of desired value from {@link Task.Value}.
+     * @return Returns additional information of task.<br>
+     * {@link String} when {@link DetailedState#PREPARING_UPDATED_KEY}<br>
+     * {@code long} when {@link DetailedState#PREPARING_UPDATED_KEY}
+     * (UNIX Epoch time <b>in seconds</b>)
+     */
     public Object getValue(int key) {
         return task.getValue(key);
     }

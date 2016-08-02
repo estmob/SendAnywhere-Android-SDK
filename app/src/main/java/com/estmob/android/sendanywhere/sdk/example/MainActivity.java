@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        Task.init("a61896b43fa8a8ecf028e5c6d814ae8807a5b073");
         Task.setProfileName("Hello world");
     }
 
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     Task.FileState fileState = (Task.FileState)obj;
                     if(fileState != null) {
                         print(String.format("%s: %s/%s",
-                                fileState.getFile().getName(),
+                                fileState.getFile().getLastPathSegment(),
                                 fileState.getTransferSize(), fileState.getTotalSize()));
                     }
                 } else if(state == SendTask.State.FINISHED) {
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     Task.FileState fileState = (Task.FileState) obj;
                     if (fileState != null) {
                         print(String.format("%s => %s/%s",
-                                fileState.getFile().getName(),
+                                fileState.getFile().getLastPathSegment(),
                                 fileState.getTransferSize(), fileState.getTotalSize()));
                     }
                 } else if (state == ReceiveTask.State.FINISHED) {

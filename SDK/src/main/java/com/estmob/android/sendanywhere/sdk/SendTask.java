@@ -9,23 +9,50 @@ import com.estmob.paprika.transfer.UploadTask;
 import java.io.File;
 import java.util.List;
 
+/**
+ * The class for sending file to receiver.
+ */
 public class SendTask extends Task {
+    /**
+     * The class contains detailed transfer state values for {@link SendTask}.
+     */
     public class DetailedState extends Task.DetailedState {
-        public static final int ERROR_NO_REQUEST =  (State.ERROR << 8) + 20;
+        public static final int ERROR_NO_REQUEST = (State.ERROR << 8) + 20;
     }
 
+    /**
+     * The interface to provide file information of sending files.
+     * <p>
+     * You can provide your own implementation of {@link FileInfo} for non-traditional files that
+     * cannot be represented as {@link java.io.File}, such as files starting with {@code content://..}
+     * <p>
+     * See <a target="_blank" href="https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/SimpleFileInfo.java">SimpleFileInfo</a>
+     * in sample for the example implementation of traditional {@link java.io.File}.
+     */
     public interface FileInfo extends UploadTask.FileInfo {
+        /**
+         * Returns {@link android.net.Uri} to file.
+         */
         @NonNull
         @Override
         Uri getUri();
 
+        /**
+         * Returns file name including path for receiver.
+         */
         @NonNull
         @Override
         String getFileName();
 
+        /**
+         * Returns total file size.
+         */
         @Override
         long getLength();
 
+        /**
+         * Returns last modified time of the file in UNIX Epoch time <b>in seconds</b>
+         */
         @Override
         long getLastModified();
     }

@@ -7,12 +7,30 @@ import com.estmob.paprika.transfer.DownloadTask;
 
 import java.io.File;
 
+/**
+ * The class for receiving file from sender.
+ */
 public class ReceiveTask extends Task {
+    /**
+     * The class contains detailed transfer state values for {@link ReceiveTask}.
+     */
     public class DetailedState extends Task.DetailedState {
-        public static final int ERROR_NO_EXIST_KEY =  (Task.State.ERROR << 8) + 20;
-        public static final int ERROR_FILE_NO_DOWNLOAD_PATH =  (Task.State.ERROR << 8) + 21;
-        public static final int ERROR_FILE_NO_DISK_SPACE =  (Task.State.ERROR << 8) + 22;
-        public static final int ERROR_FILE_DISK_NOT_MOUNTED =  (Task.State.ERROR << 8) + 23;
+        /**
+         * Wrong transfer key.
+         */
+        public static final int ERROR_NO_EXIST_KEY = (Task.State.ERROR << 8) + 20;
+        /**
+         * Cannot find download path, e.g. Permission problem.
+         */
+        public static final int ERROR_FILE_NO_DOWNLOAD_PATH = (Task.State.ERROR << 8) + 21;
+        /**
+         * Destination disk is full.
+         */
+        public static final int ERROR_FILE_NO_DISK_SPACE = (Task.State.ERROR << 8) + 22;
+        /**
+         * Disk is not mounted.
+         */
+        public static final int ERROR_FILE_DISK_NOT_MOUNTED = (Task.State.ERROR << 8) + 23;
     }
 
     public ReceiveTask(Context context, String key) {
