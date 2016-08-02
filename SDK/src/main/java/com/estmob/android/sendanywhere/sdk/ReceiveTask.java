@@ -14,7 +14,7 @@ public class ReceiveTask extends Task {
     /**
      * The class contains detailed transfer state values for {@link ReceiveTask}.
      */
-    public class DetailedState extends Task.DetailedState {
+    public static class DetailedState extends Task.DetailedState {
         /**
          * Wrong transfer key.
          */

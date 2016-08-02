@@ -16,7 +16,7 @@ public class SendTask extends Task {
     /**
      * The class contains detailed transfer state values for {@link SendTask}.
      */
-    public class DetailedState extends Task.DetailedState {
+    public static class DetailedState extends Task.DetailedState {
         public static final int ERROR_NO_REQUEST = (State.ERROR << 8) + 20;
     }
 
