@@ -44,8 +44,8 @@ public class ReceiveTask extends Task {
             }
         }
 
-        if(taskListener != null && state != State.UNKNOWN && detailedState != DetailedState.UNKNOWN) {
-            taskListener.onNotify(state, detailedState, obj);
+        if (mTaskListener != null && state != State.UNKNOWN && detailedState != DetailedState.UNKNOWN) {
+            mTaskListener.onNotify(state, detailedState, obj);
         } else {
             super.onNotify(pState, pDetailedState, obj);
         }

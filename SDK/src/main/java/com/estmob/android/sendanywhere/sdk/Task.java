@@ -84,7 +84,7 @@ public class Task {
 
     private Context context;
     protected TransferTask task;
-    protected OnTaskListener taskListener;
+    protected OnTaskListener mTaskListener;
 
     Task(Context context) {
         this.context = context;
@@ -94,8 +94,8 @@ public class Task {
         profileName = name;
     }
 
-    public void setOnTaskListener(OnTaskListener callback) {
-        taskListener = callback;
+    public void setOnTaskListener(@Nullable OnTaskListener onTaskListener) {
+        mTaskListener = onTaskListener;
     }
 
     protected void onNotify(int pState, int pDetailedState, Object obj) {
@@ -156,8 +156,8 @@ public class Task {
                     fileStatus.getTotalSize());
         }
 
-        if(taskListener != null && state != State.UNKNOWN && detailedState != DetailedState.UNKNOWN) {
-            taskListener.onNotify(state, detailedState, obj);
+        if (mTaskListener != null && state != State.UNKNOWN && detailedState != DetailedState.UNKNOWN) {
+            mTaskListener.onNotify(state, detailedState, obj);
         }
     }
 
