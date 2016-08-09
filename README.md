@@ -1,5 +1,8 @@
 Send Anywhere Android SDK  [![Download](https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg) ](https://bintray.com/estmob/maven/sendanywhere/_latestVersion)
 ===
+
+[Project homepage](http://estmob.github.io/SendAnywhere-Android-SDK/)
+
 # NOTICE
 We have following important changes on `v6.7.20` and later:
  - `SendTask.FileInfo` interface added to support sending non-traditional files.
@@ -21,7 +24,7 @@ compile ('com.estmob.android:sendanywhere:6.7.21@aar') {
 ```
 
 # Troubleshooting
-If you have any problem or questions with Send Anywhere Android SDK, please create new issue(https://github.com/estmob/SendAnywhere-Android-SDK/issues) or use our customer center(https://send-anywhere.zendesk.com).
+If you have any problem or questions with Send Anywhere Android SDK, please create new issue(https://github.com/estmob/SendAnywhere-Android-SDK/issues) or contact to our customer center(https://send-anywhere.zendesk.com).
 
 ### Proguard
 If your are using Proguard and it complains during complie, refer [Proguard rules in sample app](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/proguard-rules.pro).
@@ -39,7 +42,7 @@ If this problem persists, please contact us to re-issue your api-key.
 
 ### Conflict with `google-play-services`
 Send Anywhere SDK uses `play-services-analytics:9.0.2` internally.
-If this conflicts with your `play-services` dependecy, please exclude `play-services` module used in our SDK:
+If this conflicts with your `play-services` dependency, please exclude `play-services` module used in our SDK:
 ```gradle
 compile ('com.estmob.android:sendanywhere:x.x.x@aar') {
     exclude module: "play-services-analytics"
@@ -50,6 +53,8 @@ compile ('com.estmob.android:sendanywhere:x.x.x@aar') {
 
 # Usage
 First look at the source code of [the provided demo](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/MainActivity.java).
+
+[Javadoc](http://estmob.github.io/SendAnywhere-Android-SDK/javadoc/6.x/)
 
 Task Constructors
 ---
@@ -88,7 +93,7 @@ Parameters |                                      							   |
 context    | The current context.                 							   |
 files      | The file list with your own implementation of `SendTask.FileInfo` |
 
-You can provied your own implementation of `SendTask.FileInfo` for non-traditional files that cannot be represented as `Java.io.File`, such as files starting with `content://..`
+You can provide your own implementation of `SendTask.FileInfo` for non-traditional files that cannot be represented as `Java.io.File`, such as files starting with `content://..`
 
 See [SimpleFileInfo in sample](https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/SimpleFileInfo.java) for the example implementaion.
 
@@ -101,11 +106,11 @@ getLength       | long          | The length of sending file.       |
 getLastModified | long          | The last modified time in seconds |
 
 ### ReceiveTask(Context context, String key, File destDir)
-Parameters |                      |
----------- | ---------------------|
-context    | The current context. |
-key        | The KEY of sender.   |
-destDir    | Save folder.         |
+Parameters |                           |
+---------- | --------------------------|
+context    | The current context.      |
+key        | The KEY of sender.        |
+destDir    | The folder to save files. |
 
 
 Public methods
