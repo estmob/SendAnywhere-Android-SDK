@@ -23,13 +23,79 @@
 <a id="send-anywhere-android-sdk---" class="anchor" href="#send-anywhere-android-sdk---" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Send Anywhere Android SDK  <a href="https://bintray.com/estmob/maven/sendanywhere/_latestVersion"><img src="https://api.bintray.com/packages/estmob/maven/sendanywhere/images/download.svg" alt="Download"> </a>
 </h1>
 
+<p><a href="http://estmob.github.io/SendAnywhere-Android-SDK/">Project homepage</a></p>
+
+<h1>
+<a id="notice" class="anchor" href="#notice" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>NOTICE</h1>
+
+<p>We have following important changes on <code>v6.7.20</code> and later:</p>
+
+<ul>
+<li>
+<code>SendTask.FileInfo</code> interface added to support sending non-traditional files.</li>
+<li>
+<code>Task.FileInfo</code> is renamed to <code>Task.FileState</code> for avoiding confusion with <code>SendTask.FileInfo</code>.</li>
+</ul>
+
+<p>See <a href="https://github.com/estmob/SendAnywhere-Android-SDK/releases">Releases</a> for more details.</p>
+
+<h1>
+<a id="prequisites" class="anchor" href="#prequisites" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prequisites</h1>
+
+<p>Please issue your API key from following link first:
+<a href="https://send-anywhere.com/web/page/api">https://send-anywhere.com/web/page/api</a></p>
+
 <h1>
 <a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h1>
 
 <p>Send Anywhere Android SDK is available via both <code>jcenter()</code> and <code>mavenCentral()</code>.
 Just add the following line to your gradle dependency:</p>
 
-<div class="highlight highlight-source-groovy-gradle"><pre>compile (<span class="pl-s"><span class="pl-pds">'</span>com.estmob.android:sendanywhere:6.6.10@aar<span class="pl-pds">'</span></span>) {
+<div class="highlight highlight-source-groovy-gradle"><pre>compile (<span class="pl-s"><span class="pl-pds">'</span>com.estmob.android:sendanywhere:6.7.21@aar<span class="pl-pds">'</span></span>) {
+    transitive <span class="pl-k">=</span> <span class="pl-c1">true</span>
+}</pre></div>
+
+<h1>
+<a id="troubleshooting" class="anchor" href="#troubleshooting" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Troubleshooting</h1>
+
+<p>If you have any problem or questions with Send Anywhere Android SDK, please create new issue(<a href="https://github.com/estmob/SendAnywhere-Android-SDK/issues">https://github.com/estmob/SendAnywhere-Android-SDK/issues</a>) or contact to our customer center(<a href="https://send-anywhere.zendesk.com">https://send-anywhere.zendesk.com</a>).</p>
+
+<h3>
+<a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Proguard</h3>
+
+<p>If your are using Proguard and it complains during complie, refer <a href="https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/proguard-rules.pro">Proguard rules in sample app</a>.</p>
+
+<h3>
+<a id="runtime-permission-error-javaioioexception-open-failed-eacces-permission-denied" class="anchor" href="#runtime-permission-error-javaioioexception-open-failed-eacces-permission-denied" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Runtime permission error: <code>java.io.IOException: open failed: EACCES (Permission denied)</code>
+</h3>
+
+<p>From Android Marshmallow(API 23), Android introduced new way to handle application permissions, called "Runtime Permissions". This requires developers to request sensitive permissions to users explicitly in application runtime. Send Anywhere SDK requires external storage permissions(<code>android.permission.WRITE_EXTERNAL_STORAGE</code>,<code>
+android.permission.READ_EXTERNAL_STORAGE</code>) to work properly, but <strong>does NOT</strong> handle these permissions automatically. Please refer these articles to see more about Runtime Permission Model:</p>
+
+<ul>
+<li>Requesting Permissions at Run Time (Android Developers) -  <a href="https://developer.android.com/training/permissions/requesting.html">https://developer.android.com/training/permissions/requesting.html</a>
+</li>
+<li>Exploring the new Android Permissions Model (Ribot labs) - <a href="https://labs.ribot.co.uk/exploring-the-new-android-permissions-model-ba1d5d6c0610#.95cppknud">https://labs.ribot.co.uk/exploring-the-new-android-permissions-model-ba1d5d6c0610#.95cppknud</a>
+</li>
+</ul>
+
+<h3>
+<a id="api-key-error-error_wrong_api_key" class="anchor" href="#api-key-error-error_wrong_api_key" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API key error: <code>ERROR_WRONG_API_KEY</code>
+</h3>
+
+<p>You must call <code>Task.init("YOUR_API_KEY")</code> proceeding any transfer operations, e.g. <code>onCreate</code> of <code>Activity</code>. It is declared as <code>static</code>, so you just have to call it once.</p>
+
+<p>If this problem persists, please contact us to re-issue your api-key.</p>
+
+<h3>
+<a id="conflict-with-google-play-services" class="anchor" href="#conflict-with-google-play-services" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conflict with <code>google-play-services</code>
+</h3>
+
+<p>Send Anywhere SDK uses <code>play-services-analytics:9.0.2</code> internally.
+If this conflicts with your <code>play-services</code> dependency, please exclude <code>play-services</code> module used in our SDK:</p>
+
+<div class="highlight highlight-source-groovy-gradle"><pre>compile (<span class="pl-s"><span class="pl-pds">'</span>com.estmob.android:sendanywhere:x.x.x@aar<span class="pl-pds">'</span></span>) {
+    exclude <span class="pl-c1">module</span>: <span class="pl-s"><span class="pl-pds">"</span>play-services-analytics<span class="pl-pds">"</span></span>
     transitive <span class="pl-k">=</span> <span class="pl-c1">true</span>
 }</pre></div>
 
@@ -38,21 +104,30 @@ Just add the following line to your gradle dependency:</p>
 
 <p>First look at the source code of <a href="https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/MainActivity.java">the provided demo</a>.</p>
 
+<p><a href="http://estmob.github.io/SendAnywhere-Android-SDK/javadoc/6.x/">Javadoc</a></p>
+
 <h2>
-<a id="task-constructor" class="anchor" href="#task-constructor" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Task Constructor</h2>
+<a id="task-constructors" class="anchor" href="#task-constructors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Task Constructors</h2>
 
-<pre><code>public class SendTask extends Task {
-    public SendTask(Context context, File[] files);
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">SendTask</span> <span class="pl-k">extends</span> <span class="pl-e">Task</span> {
+    <span class="pl-k">public</span> <span class="pl-en">SendTask</span>(<span class="pl-smi">Context</span> <span class="pl-v">context</span>, <span class="pl-k">File</span>[] <span class="pl-v">files</span>);
 
-    ...
+    <span class="pl-k">public</span> <span class="pl-en">SendTask</span>(<span class="pl-smi">Context</span> <span class="pl-v">context</span>, <span class="pl-k">List&lt;? extends <span class="pl-smi">FileInfo</span>&gt;</span> <span class="pl-v">files</span>);
+
+    <span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">FileInfo</span> {
+        <span class="pl-k">@NonNull</span> <span class="pl-smi">Uri</span> <span class="pl-en">getUri</span>();
+        <span class="pl-k">@NonNull</span> <span class="pl-smi">String</span> <span class="pl-en">getFileName</span>();
+        <span class="pl-k">long</span> <span class="pl-en">getLength</span>();
+        <span class="pl-k">long</span> <span class="pl-en">getLastModified</span>();
+    }
+    <span class="pl-c1">...</span>
 }
 
-public class ReceiveTask extends Task {
-    public ReceiveTask(Context context, String key, File destDir);
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReceiveTask</span> <span class="pl-k">extends</span> <span class="pl-e">Task</span> {
+    <span class="pl-k">public</span> <span class="pl-en">ReceiveTask</span>(<span class="pl-smi">Context</span> <span class="pl-v">context</span>, <span class="pl-smi">String</span> <span class="pl-v">key</span>, <span class="pl-smi">File</span> <span class="pl-v">destDir</span>);
 
-    ...
-}
-</code></pre>
+    <span class="pl-c1">...</span>
+}</pre></div>
 
 <h3>
 <a id="sendtaskcontext-context-file-files" class="anchor" href="#sendtaskcontext-context-file-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SendTask(Context context, File[] files)</h3>
@@ -72,6 +147,68 @@ public class ReceiveTask extends Task {
 <tr>
 <td>files</td>
 <td>The file list what you want to send.</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="sendtaskcontext-context-list-extends-fileinfo-files" class="anchor" href="#sendtaskcontext-context-list-extends-fileinfo-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SendTask(Context context, List&lt;? extends FileInfo&gt; files)</h3>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>context</td>
+<td>The current context.</td>
+</tr>
+<tr>
+<td>files</td>
+<td>The file list with your own implementation of <code>SendTask.FileInfo</code>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>You can provide your own implementation of <code>SendTask.FileInfo</code> for non-traditional files that cannot be represented as <code>Java.io.File</code>, such as files starting with <code>content://..</code></p>
+
+<p>See <a href="https://github.com/estmob/SendAnywhere-Android-SDK/blob/master/app/src/main/java/com/estmob/android/sendanywhere/sdk/example/SimpleFileInfo.java">SimpleFileInfo in sample</a> for the example implementaion.</p>
+
+<h4>
+<a id="sendtaskfileinfo-interface" class="anchor" href="#sendtaskfileinfo-interface" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SendTask.FileInfo interface</h4>
+
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>Return type</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getUri</td>
+<td>Uri</td>
+<td>The Uri of sending file.</td>
+</tr>
+<tr>
+<td>getFileName</td>
+<td>String</td>
+<td>The file name for recevier.</td>
+</tr>
+<tr>
+<td>getLength</td>
+<td>long</td>
+<td>The length of sending file.</td>
+</tr>
+<tr>
+<td>getLastModified</td>
+<td>long</td>
+<td>The last modified time in seconds</td>
 </tr>
 </tbody>
 </table>
@@ -97,31 +234,34 @@ public class ReceiveTask extends Task {
 </tr>
 <tr>
 <td>destDir</td>
-<td>Save folder.</td>
+<td>The folder to save files.</td>
 </tr>
 </tbody>
 </table>
 
 <h2>
-<a id="public-method" class="anchor" href="#public-method" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Public method</h2>
+<a id="public-methods" class="anchor" href="#public-methods" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Public methods</h2>
 
-<pre><code>public class Task {
-    ...
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Task</span> {
+    <span class="pl-c1">...</span>
 
-    public static void init(String key);
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">init</span>(<span class="pl-smi">String</span> <span class="pl-v">key</span>);
 
-    public void start();
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">setProfileName</span>(<span class="pl-smi">String</span> <span class="pl-v">name</span>);
 
-    public void await();
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">start</span>();
 
-    public void cancel();
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">await</span>();
 
-    ...
-}
-</code></pre>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">cancel</span>();
+
+    <span class="pl-k">public</span> <span class="pl-smi">Object</span> <span class="pl-en">getValue</span>();
+
+    <span class="pl-c1">...</span>
+}</pre></div>
 
 <h3>
-<a id="static-void-initstring-key" class="anchor" href="#static-void-initstring-key" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>static void init(String key)</h3>
+<a id="public-static-void-initstring-key" class="anchor" href="#public-static-void-initstring-key" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public static void init(String key)</h3>
 
 <p>Set your API key.</p>
 
@@ -141,92 +281,134 @@ public class ReceiveTask extends Task {
 </table>
 
 <h3>
-<a id="void-start" class="anchor" href="#void-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void start()</h3>
+<a id="public-static-void-setprofilenamestring-name" class="anchor" href="#public-static-void-setprofilenamestring-name" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public static void setProfileName(String name)</h3>
+
+<p>Set profile name of the device</p>
+
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>Desired device name</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="public-void-start" class="anchor" href="#public-void-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public void start()</h3>
 
 <p>Start task for sending or receiving.</p>
 
 <h3>
-<a id="void-await" class="anchor" href="#void-await" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void await()</h3>
+<a id="public-void-await" class="anchor" href="#public-void-await" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public void await()</h3>
 
 <p>Wait until task is finished.</p>
 
 <h3>
-<a id="void-cancel" class="anchor" href="#void-cancel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>void cancel()</h3>
+<a id="public-void-cancel" class="anchor" href="#public-void-cancel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public void cancel()</h3>
 
 <p>Cancel the task to stop.</p>
 
+<h3>
+<a id="public-object-getvalueint-key" class="anchor" href="#public-object-getvalueint-key" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public Object getValue(int key)</h3>
+
+<p>Fetch additional information of <code>Task</code>. You should cast return <code>Object</code> to vaild types for each cases.</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">Value</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">KEY</span>;
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">EXPIRES_TIME</span>;
+}</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Task.Value (key)</th>
+<th>Task.DetailedState (available on)</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KEY</td>
+<td>PREPARING_UPDATED_KEY</td>
+<td>String</td>
+</tr>
+<tr>
+<td>EXPIRES_TIME</td>
+<td>PREPARING_UPDATED_KEY</td>
+<td>long (UNIX Epoch time <strong>in seconds</strong>)</td>
+</tr>
+</tbody>
+</table>
+
 <h2>
-<a id="listener-for-task" class="anchor" href="#listener-for-task" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Listener for task</h2>
+<a id="listeners-for-task" class="anchor" href="#listeners-for-task" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Listeners for <code>Task</code>
+</h2>
 
-<pre><code>public class Task {
-    ...
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Task</span> {
+    <span class="pl-c1">...</span>
 
-    public interface OnTaskListener {
-        void onNotify(int state, int detailedState, Object obj);
+    <span class="pl-k">public</span> <span class="pl-k">interface</span> <span class="pl-en">OnTaskListener</span> {
+        <span class="pl-k">void</span> <span class="pl-en">onNotify</span>(<span class="pl-k">int</span> <span class="pl-v">state</span>, <span class="pl-k">int</span> <span class="pl-v">detailedState</span>, <span class="pl-smi">Object</span> <span class="pl-v">obj</span>);
     }
 
-    public void setOnTaskListener(OnTaskListener callback)
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">setOnTaskListener</span>(<span class="pl-smi">OnTaskListener</span> <span class="pl-v">callback</span>)
 
     ...
-}
-</code></pre>
+}</pre></div>
 
-<pre><code>public class Task {
-    ...
-
-    public class State {
-        public static final int UNKNOWN;
-        public static final int FINISHED;
-        public static final int ERROR;
-        public static final int PREPARING;
-        public static final int TRANSFERRING;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Task</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">State</span> {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">UNKNOWN</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">FINISHED</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">PREPARING</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">TRANSFERRING</span>;
     }
 
-    public class DetailedState {
-        public static final int UNKNOWN;
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">DetailedState</span> {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">UNKNOWN</span>;
 
-        public static final int FINISHED_SUCCESS;
-        public static final int FINISHED_CANCEL;
-        public static final int FINISHED_ERROR;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">FINISHED_SUCCESS</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">FINISHED_CANCEL</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">FINISHED_ERROR</span>;
 
-        public static final int ERROR_WRONG_API_KEY;
-        public static final int ERROR_SERVER;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_WRONG_API_KEY</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_SERVER</span>;
 
-        public static final int PREPARING_UPDATED_KEY;
-        public static final int PREPARING_UPDATED_FILE_LIST;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">PREPARING_UPDATED_KEY</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">PREPARING_UPDATED_FILE_LIST</span>;
 
-        public static final int TRANSFERRING;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">TRANSFERRING</span>;
     }
 
-    ...
-}
-</code></pre>
+    <span class="pl-c1">...</span>
+}</pre></div>
 
-<pre><code>public class SendTask extends Task {
-    ...
-
-    public class DetailedState extends Task.DetailedState {
-        public static final int ERROR_NO_REQUEST;
-        public static final int ERROR_NO_EXIST_FILE;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">SendTask</span> <span class="pl-k">extends</span> <span class="pl-e">Task</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">DetailedState</span> <span class="pl-k">extends</span> <span class="pl-e">Task</span>.<span class="pl-e">DetailedState</span> {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_NO_REQUEST</span>;
     }
 
-    ...
-}
-</code></pre>
+    <span class="pl-c1">...</span>
+}</pre></div>
 
-<pre><code>public class ReceiveTask extends Task {
-    ...
-
-    public class DetailedState extends Task.DetailedState {
-        public static final int ERROR_NO_EXIST_KEY;
-        public static final int ERROR_FILE_NO_DOWNLOAD_PATH;
-        public static final int ERROR_FILE_NO_DISK_SPACE;
-        public static final int ERROR_FILE_DISK_NOT_MOUNTED;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">ReceiveTask</span> <span class="pl-k">extends</span> <span class="pl-e">Task</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">DetailedState</span> <span class="pl-k">extends</span> <span class="pl-e">Task</span>.<span class="pl-e">DetailedState</span> {
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_NO_EXIST_KEY</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_FILE_NO_DOWNLOAD_PATH</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_FILE_NO_DISK_SPACE</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">ERROR_FILE_DISK_NOT_MOUNTED</span>;
     }
 
-    ...
-}
-</code></pre>
+    <span class="pl-c1">...</span>
+}</pre></div>
 
 <h3>
 <a id="public-void-setontasklistenerontasklistener-callback" class="anchor" href="#public-void-setontasklistenerontasklistener-callback" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>public void setOnTaskListener(OnTaskListener callback)</h3>
@@ -277,11 +459,6 @@ public class ReceiveTask extends Task {
 </tr>
 <tr>
 <td></td>
-<td>ERROR_NO_EXIST_FILE</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
 <td>ERROR_NO_EXIST_KEY</td>
 <td></td>
 </tr>
@@ -318,8 +495,7 @@ public class ReceiveTask extends Task {
 </tbody>
 </table>
 
-<ul>
-<li>Flow Step
+<p>Flow Step</p>
 
 <ul>
 <li>PREPARING_UPDATED_KEY
@@ -336,6 +512,8 @@ public class ReceiveTask extends Task {
 
 <ul>
 <li>FINISHED_SUCCESS</li>
+</ul>
+</li>
 <li>FINISHED_CANCEL</li>
 <li>ERROR
 
@@ -348,27 +526,22 @@ public class ReceiveTask extends Task {
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
 
 <h2>
-<a id="file-information" class="anchor" href="#file-information" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File Information</h2>
+<a id="filestate-file-transfer-state-information" class="anchor" href="#filestate-file-transfer-state-information" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FileState (File Transfer State Information)</h2>
 
-<pre><code>public class Task {
-    ...
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Task</span> {
+    <span class="pl-c1">...</span>
 
-    public class FileInfo {
-        public File getFile();
-        public String getPathName();
-        public long getTransferSize();
-        public long getTotalSize();
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">FileSate</span> {
+        <span class="pl-k">public</span> <span class="pl-smi">File</span> <span class="pl-en">getFile</span>();
+        <span class="pl-k">public</span> <span class="pl-smi">String</span> <span class="pl-en">getPathName</span>();
+        <span class="pl-k">public</span> <span class="pl-k">long</span> <span class="pl-en">getTransferSize</span>();
+        <span class="pl-k">public</span> <span class="pl-k">long</span> <span class="pl-en">getTotalSize</span>();
     }
 
-    ...
-}
-</code></pre>
+    <span class="pl-c1">...</span>
+}</pre></div>
 
 <h3>
 <a id="file-getfile" class="anchor" href="#file-getfile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>File getFile()</h3>
