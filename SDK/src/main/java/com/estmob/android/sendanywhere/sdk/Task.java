@@ -1,11 +1,9 @@
 package com.estmob.android.sendanywhere.sdk;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
-import com.estmob.paprika.transfer.AuthTokenValue;
 import com.estmob.paprika.transfer.TransferTask;
 
 
@@ -169,8 +167,6 @@ public class Task {
     }
 
     private static String profileName = "Send Anywhere SDK";
-    private static final String PREF_NAME = "sendanywhere";
-    private static AuthTokenValue token;
 
     private Context context;
     protected TransferTask task;
@@ -202,27 +198,27 @@ public class Task {
         int state = State.UNKNOWN;
         int detailedState = DetailedState.UNKNOWN;
 
-        if (pState == State.FINISHED) {
+        if (pState == TransferTask.State.FINISHED) {
             state = State.FINISHED;
-            if (pDetailedState == DetailedState.FINISHED_SUCCESS) {
+            if (pDetailedState == TransferTask.DetailedState.FINISHED_SUCCESS) {
                 detailedState = DetailedState.FINISHED_SUCCESS;
-            } else if (pDetailedState == DetailedState.FINISHED_CANCEL) {
+            } else if (pDetailedState == TransferTask.DetailedState.FINISHED_CANCEL) {
                 detailedState = DetailedState.FINISHED_CANCEL;
-            } else if (pDetailedState == DetailedState.FINISHED_ERROR) {
+            } else if (pDetailedState == TransferTask.DetailedState.FINISHED_ERROR) {
                 detailedState = DetailedState.FINISHED_ERROR;
             }
-        } else if (pState == State.ERROR) {
+        } else if (pState == TransferTask.State.ERROR) {
             state = State.ERROR;
-            if (pDetailedState == DetailedState.ERROR_WRONG_API_KEY) {
+            if (pDetailedState == TransferTask.DetailedState.ERROR_WRONG_API_KEY) {
                 detailedState = DetailedState.ERROR_WRONG_API_KEY;
             } else {
                 detailedState = DetailedState.ERROR_SERVER;
             }
-        } else if (pState == State.PREPARING) {
+        } else if (pState == TransferTask.State.PREPARING) {
             state = State.PREPARING;
-            if (pDetailedState == DetailedState.PREPARING_UPDATED_KEY) {
+            if (pDetailedState == TransferTask.DetailedState.PREPARING_UPDATED_KEY) {
                 detailedState = DetailedState.PREPARING_UPDATED_KEY;
-            } else if (pDetailedState == DetailedState.PREPARING_UPDATED_FILE_LIST) {
+            } else if (pDetailedState == TransferTask.DetailedState.PREPARING_UPDATED_FILE_LIST) {
                 detailedState = DetailedState.PREPARING_UPDATED_FILE_LIST;
 
                 TransferTask.FileState[] fileStatus = (TransferTask.FileState[]) obj;
@@ -235,17 +231,8 @@ public class Task {
                             fileStatus[i].getTotalSize());
                 }
                 obj = fileState;
-            } else if (pDetailedState == DetailedState.PREPARING_UPDATED_DEVICE_ID) {
-                String deviceId = token.getDeviceId();
-                String devicePassword = token.getDevicePassword();
-
-                SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("device_id", deviceId);
-                editor.putString("device_password", devicePassword);
-                editor.commit();
             }
-        } else if (pState == State.TRANSFERRING) {
+        } else if (pState == TransferTask.State.TRANSFERRING) {
             state = State.TRANSFERRING;
             detailedState = DetailedState.TRANSFERRING;
 
@@ -269,41 +256,7 @@ public class Task {
      * @see #await()
      */
     public void start() {
-        task.setOptionValues(new TransferTask.Option() {
-            @Override
-            public String getApiServer() {
-                return null;
-            }
-
-            @Override
-            public String getPushId() {
-                return null;
-            }
-
-            @Override
-            public String getOneSignalId() {
-                return null;
-            }
-
-            @Override
-            public String getProfileName() {
-                return profileName;
-            }
-        });
-
-        if (token == null) {
-            SharedPreferences pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-            String deviceId = pref.getString("device_id", null);
-            String devicePassword = pref.getString("device_password", null);
-
-            if (deviceId != null && devicePassword != null) {
-                token = new AuthTokenValue(deviceId, devicePassword);
-            } else {
-                token = new AuthTokenValue();
-            }
-        }
-        task.setAuthTokenValue(token);
-
+        task.setOption(TransferTask.Option.PROFILE_NAME, profileName);
         task.setOnTaskListener(new TransferTask.OnTaskListener() {
             @Override
             public void onNotify(int pState, int pDetailedState, Object obj) {

@@ -49,15 +49,15 @@ public class ReceiveTask extends Task {
         int state = State.UNKNOWN;
         int detailedState = DetailedState.UNKNOWN;
 
-        if (pState == State.ERROR) {
+        if (pState == DownloadTask.State.ERROR) {
             state = State.ERROR;
-            if (pDetailedState == DetailedState.ERROR_NO_EXIST_KEY) {
+            if (pDetailedState == DownloadTask.DetailedState.ERROR_NO_EXIST_KEY) {
                 detailedState = DetailedState.ERROR_NO_EXIST_KEY;
-            } else if (pDetailedState == DetailedState.ERROR_FILE_NO_DOWNLOAD_PATH) {
+            } else if (pDetailedState == DownloadTask.DetailedState.ERROR_FILE_NO_DOWNLOAD_PATH) {
                 detailedState = DetailedState.ERROR_FILE_NO_DOWNLOAD_PATH;
-            } else if (pDetailedState == DetailedState.ERROR_FILE_NO_DISK_SPACE) {
+            } else if (pDetailedState == DownloadTask.DetailedState.ERROR_FILE_NO_DISK_SPACE) {
                 detailedState = DetailedState.ERROR_FILE_NO_DISK_SPACE;
-            } else if (pDetailedState == DetailedState.ERROR_FILE_DISK_NOT_MOUNTED) {
+            } else if (pDetailedState == DownloadTask.DetailedState.ERROR_FILE_DISK_NOT_MOUNTED) {
                 detailedState = DetailedState.ERROR_FILE_DISK_NOT_MOUNTED;
             }
         }

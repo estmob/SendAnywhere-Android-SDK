@@ -73,9 +73,9 @@ public class SendTask extends Task {
         int state = State.UNKNOWN;
         int detailedState = DetailedState.UNKNOWN;
 
-        if (pState == State.ERROR) {
+        if (pState == UploadTask.State.ERROR) {
             state = State.ERROR;
-            if (pDetailedState == DetailedState.ERROR_NO_REQUEST) {
+            if (pDetailedState == UploadTask.DetailedState.ERROR_NO_REQUEST) {
                 detailedState = DetailedState.ERROR_NO_REQUEST;
             }
         }
