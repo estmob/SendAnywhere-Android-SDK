@@ -18,7 +18,7 @@ https://send-anywhere.com/web/page/api
 Send Anywhere Android SDK is available via both `jcenter()` and `mavenCentral()`.
 Just add the following line to your gradle dependency:
 ```gradle
-compile ('com.estmob.android:sendanywhere:6.7.21@aar') {
+compile ('com.estmob.android:sendanywhere:6.10.21@aar') {
 	transitive = true
 }
 ```
@@ -263,8 +263,8 @@ ERROR        | ERROR_WRONG_API_KEY          |                 |
              | ERROR_FILE_NO_DISK_SPACE     |                 |
              | ERROR_FILE_DISK_NOT_MOUNTED  |                 |
 PREPARING    | PREPARING_UPDATED_KEY        | String          |
-             | PREPARING_UPDATED_FILE_LIST  | Task.FileInfo[] |
-TRANSFERRING | TRANSFERRING                 | Task.FileInfo   |
+             | PREPARING_UPDATED_FILE_LIST  | Task.FileState[]|
+TRANSFERRING | TRANSFERRING                 | Task.FileState  |
 
 
 Flow Step
