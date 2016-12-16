@@ -15,7 +15,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         minSdkVersion 11
@@ -39,10 +39,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //compile project(':sendanywhere')
     compile 'com.estmob.android:sendanywhere-core:6.10.21@aar'
-    compile 'com.google.android.gms:play-services-analytics:9.6.1'
+    compile 'com.google.android.gms:play-services-analytics:10.0.1'
     compile 'com.squareup.okio:okio:1.11.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
-    compile 'com.android.support:support-annotations:25.0.0'
+    compile 'com.android.support:support-annotations:25.1.0'
 }
 
 apply from: 'gradle-jcenter-push.gradle'
