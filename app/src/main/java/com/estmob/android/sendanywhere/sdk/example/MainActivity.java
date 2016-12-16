@@ -65,8 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Task.init("a61896b43fa8a8ecf028e5c6d814ae8807a5b073");
-        Task.setProfileName("Hello world");
+        Task.init("YOUR_API_KEY");
     }
 
     @Override
@@ -132,9 +131,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        final SendTask sendTask = new SendTask(this, new File[] {file1, file2});
+        final boolean uploadMode = true;
+//        final SendTask sendTask = new SendTask(this, new File[] {file1, file2}, uploadMode);
         final SendTask sendTask = new SendTask(this, Arrays.asList(new SimpleFileInfo(file1),
-                new SimpleFileInfo(file2)));
+                new SimpleFileInfo(file2)), uploadMode);
 
         sendTask.setOnTaskListener(new SendTask.OnTaskListener() {
             @Override
@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         if(key != null) {
                             ((TextView)findViewById(R.id.key)).setText(key);
                             print(String.format("Received key: %s", key));
+                            print(String.format("Link URL: %s", sendTask.getValue(Task.Value.LINK_URL)));
                             print(String.format("Expires at: %s", new Timestamp((long)sendTask.getValue(Task.Value.EXPIRES_TIME) * 1000)));
                         }
                     }

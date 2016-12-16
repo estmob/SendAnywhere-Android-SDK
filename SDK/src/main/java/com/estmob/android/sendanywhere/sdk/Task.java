@@ -82,6 +82,10 @@ public class Task {
          * Key of expiration time of corresponding transfer key
          */
         public static final int EXPIRES_TIME = 0x103;
+        /**
+         * Link URL for recipient
+         */
+        public static final int LINK_URL = 0x1000;
     }
 
     /**

@@ -69,6 +69,18 @@ public class SendTask extends Task {
         task = new UploadTask(context, files);
     }
 
+    public SendTask(Context context, File[] files, boolean uploadMode) {
+        super(context);
+
+        task = new UploadTask(context, files, uploadMode ? UploadTask.Mode.UPLOAD : UploadTask.Mode.DIRECT);
+    }
+
+    public SendTask(Context context, List<? extends FileInfo> files, boolean uploadMode) {
+        super(context);
+
+        task = new UploadTask(context, files, uploadMode ? UploadTask.Mode.UPLOAD : UploadTask.Mode.DIRECT);
+    }
+
     protected void onNotify(int pState, int pDetailedState, Object obj) {
         int state = State.UNKNOWN;
         int detailedState = DetailedState.UNKNOWN;
