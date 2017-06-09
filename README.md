@@ -62,8 +62,12 @@ Task Constructors
 ```java
 public class SendTask extends Task {
     public SendTask(Context context, File[] files);
-
+    
     public SendTask(Context context, List<? extends FileInfo> files);
+    
+    public SendTask(Context context, File[] files, boolean uploadMode);
+
+    public SendTask(Context context, List<? extends FileInfo> files, boolean uploadMode);
 
 	public interface FileInfo {
         @NonNull Uri getUri();
@@ -104,6 +108,22 @@ getUri          | Uri           | The Uri of sending file.          |
 getFileName     | String        | The file name for recevier.       |
 getLength       | long          | The length of sending file.       |
 getLastModified | long          | The last modified time in seconds |
+
+### SendTask(Context context, File[] files, boolean uploadMode)
+Parameters |                                      |
+-----------| -------------------------------------|
+context    | The current context.                 |
+files      | The file list what you want to send. |
+uploadMode | Set to true to enable upload mode.   |
+
+In upload mode, the receiver can receive the file using the key or URL after the file transfer is completed.
+
+### SendTask(Context context, List<? extends FileInfo> files, boolean uploadMode)
+Parameters |                                      							   |
+-----------| ------------------------------------------------------------------|
+context    | The current context.                 							   |
+files      | The file list with your own implementation of `SendTask.FileInfo` |
+uploadMode | Set to true to enable upload mode.                                |
 
 ### ReceiveTask(Context context, String key, File destDir)
 Parameters |                           |
