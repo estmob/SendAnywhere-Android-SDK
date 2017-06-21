@@ -18,7 +18,7 @@ https://send-anywhere.com/web/page/api
 Send Anywhere Android SDK is available via both `jcenter()` and `mavenCentral()`.
 Just add the following line to your gradle dependency:
 ```gradle
-compile ('com.estmob.android:sendanywhere:7.6.9@aar') {
+compile ('com.estmob.android:sendanywhere:7.6.21@aar') {
 	transitive = true
 }
 ```
