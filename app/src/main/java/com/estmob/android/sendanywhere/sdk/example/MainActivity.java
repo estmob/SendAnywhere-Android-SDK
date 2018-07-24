@@ -2,6 +2,7 @@ package com.estmob.android.sendanywhere.sdk.example;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -133,8 +134,14 @@ public class MainActivity extends AppCompatActivity {
 
         final boolean uploadMode = true;
 //        final SendTask sendTask = new SendTask(this, new File[] {file1, file2}, uploadMode);
-        final SendTask sendTask = new SendTask(this, Arrays.asList(new SimpleFileInfo(file1),
-                new SimpleFileInfo(file2)), uploadMode);
+        final Uri uri = Uri.fromFile(file1);
+        final SimpleFileInfo fileInfo1 = new SimpleFileInfo(this, uri);
+        final SimpleFileInfo fileInfo2 = new SimpleFileInfo(file2);
+        if (!fileInfo1.isValid() || !fileInfo2.isValid()) {
+            print("ERROR: Invalid file info.");
+            return;
+        }
+        final SendTask sendTask = new SendTask(this, Arrays.asList(fileInfo1, fileInfo2), uploadMode);
 
         sendTask.setOnTaskListener(new SendTask.OnTaskListener() {
             @Override
