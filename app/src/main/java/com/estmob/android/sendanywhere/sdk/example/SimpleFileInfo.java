@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.estmob.android.sendanywhere.sdk.SendTask;
 

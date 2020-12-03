@@ -2,7 +2,7 @@ package com.estmob.android.sendanywhere.sdk;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.estmob.paprika.transfer.TransferTask;
 

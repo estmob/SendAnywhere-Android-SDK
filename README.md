@@ -4,10 +4,6 @@ Send Anywhere Android SDK  [![Download](https://api.bintray.com/packages/estmob/
 [Project homepage](http://estmob.github.io/SendAnywhere-Android-SDK/)
 
 # NOTICE
-We have following important changes on `v6.7.20` and later:
- - `SendTask.FileInfo` interface added to support sending non-traditional files.
- - `Task.FileInfo` is renamed to `Task.FileState` for avoiding confusion with `SendTask.FileInfo`.
-
 See [Releases](https://github.com/estmob/SendAnywhere-Android-SDK/releases) for more details.
 
 # Prequisites
@@ -18,7 +14,7 @@ https://send-anywhere.com/web/page/api
 Send Anywhere Android SDK is available via both `jcenter()` and `mavenCentral()`.
 Just add the following line to your gradle dependency:
 ```gradle
-compile ('com.estmob.android:sendanywhere:7.6.21@aar') {
+compile ('com.estmob.android:sendanywhere:10.12.3@aar') {
 	transitive = true
 }
 ```
@@ -41,11 +37,11 @@ You must call `Task.init("YOUR_API_KEY")` proceeding any transfer operations, e.
 If this problem persists, please contact us to re-issue your api-key.
 
 ### Conflict with `google-play-services`
-Send Anywhere SDK uses `play-services-analytics:9.0.2` internally.
+Send Anywhere SDK uses `play-services-ads-identifier` internally.
 If this conflicts with your `play-services` dependency, please exclude `play-services` module used in our SDK:
 ```gradle
 compile ('com.estmob.android:sendanywhere:x.x.x@aar') {
-    exclude module: "play-services-analytics"
+    exclude module: "play-services-ads-identifier"
     transitive = true
 }
 ```
