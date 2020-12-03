@@ -18,6 +18,12 @@ compile ('com.estmob.android:sendanywhere:10.12.3@aar') {
 	transitive = true
 }
 ```
+Add android:requestLegacyExternalStorage="true" to AndroidManifest.xml.
+```xml
+<application
+    android:requestLegacyExternalStorage="true" >
+</application>
+```
 
 # Troubleshooting
 If you have any problem or questions with Send Anywhere Android SDK, please create new issue(https://github.com/estmob/SendAnywhere-Android-SDK/issues) or contact to our customer center(https://send-anywhere.zendesk.com).
