@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.estmob.android.sendanywhere.sdk.example"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 30
 
-        versionCode 61021
-        versionName '6.10.21'
+        versionCode 110120
+        versionName '11.1.20'
     }
     buildTypes {
         debug {

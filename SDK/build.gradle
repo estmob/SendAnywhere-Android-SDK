@@ -13,16 +13,37 @@ plugins {
 
 apply plugin: 'com.android.library'
 
+static def date() {
+    TimeZone.default = TimeZone.getTimeZone('UTC')
+    return new Date()
+}
+
+static def buildVersionName() {
+    Calendar cal = Calendar.instance
+    cal.time = date()
+    int year = (cal.get(Calendar.YEAR) % 100) - 10
+    int month = cal.get(Calendar.MONTH) + 1
+    int day = cal.get(Calendar.DAY_OF_MONTH)
+
+    return String.format("%s.%s.%s", year, month, day)
+}
+
+static def buildVersionCode() {
+    def now = date()
+    def seconds = (int) (now.time / 1000)
+    return (int) (seconds / 3600)
+}
+
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 30
 
-        versionCode 101201
-        versionName '10.12.1'
+        versionName buildVersionName()
+        versionCode buildVersionCode()
 
         consumerProguardFiles 'consumer-proguard-rules.pro'
     }
@@ -36,7 +57,7 @@ android {
 }
 
 dependencies {
-    api ('com.estmob.android:sendanywhere-core:10.12.3@aar') {
+    api ('com.estmob.android:sendanywhere-core:11.1.21@aar') {
         transitive = true
     }
     implementation 'androidx.annotation:annotation:1.1.0'

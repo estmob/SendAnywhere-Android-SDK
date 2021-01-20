@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -213,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
         recvButton.setEnabled(false);
 
         String key = ((TextView)findViewById(R.id.key)).getText().toString();
-
-        ReceiveTask recvTask = new ReceiveTask(this, key);
+        File destDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        ReceiveTask recvTask = new ReceiveTask(this, key, destDir);
 
         recvTask.setOnTaskListener(new ReceiveTask.OnTaskListener() {
             @Override
