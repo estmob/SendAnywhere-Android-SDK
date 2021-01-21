@@ -1,6 +1,21 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        // google play
+        version_play_ads_identifier = "17.0.0"
+
+        // androidx
+        version_documentfile = "1.0.1"
+
+        // https://github.com/square/okio1
+        version_okio = "1.15.0"
+
+        // https://github.com/square/okhttp
+        version_okhttp = "3.12.12"
+
+        version_httpcore = "4.4.10"
+    }
     repositories {
         google()
         jcenter()

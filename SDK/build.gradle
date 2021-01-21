@@ -57,9 +57,13 @@ android {
 }
 
 dependencies {
-    api ('com.estmob.android:sendanywhere-core:11.1.21@aar') {
-        transitive = true
-    }
+    api ('com.estmob.android:sendanywhere-core:11.1.21@aar')
+    implementation "com.google.android.gms:play-services-ads-identifier:$rootProject.ext.version_play_ads_identifier"
+    implementation "androidx.documentfile:documentfile:$rootProject.ext.version_documentfile"
+    implementation("com.squareup.okhttp3:okhttp") { version {
+        strictly "$rootProject.ext.version_okhttp"
+    }}
+    implementation "org.apache.httpcomponents:httpcore:$rootProject.ext.version_httpcore"
     implementation 'androidx.annotation:annotation:1.1.0'
 }
 
