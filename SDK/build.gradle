@@ -57,7 +57,7 @@ android {
 }
 
 dependencies {
-    api ('com.estmob.android:sendanywhere-core:11.1.21@aar')
+    api ('com.estmob.android:sendanywhere-core:11.1.22@aar')
     implementation "com.google.android.gms:play-services-ads-identifier:$rootProject.ext.version_play_ads_identifier"
     implementation "androidx.documentfile:documentfile:$rootProject.ext.version_documentfile"
     implementation("com.squareup.okhttp3:okhttp") { version {
